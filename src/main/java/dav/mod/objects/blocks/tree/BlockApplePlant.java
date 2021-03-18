@@ -67,31 +67,31 @@ public class BlockApplePlant extends Block implements IGrowable, IHasModel{
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		IBlockState upState = worldIn.getBlockState(pos.up());
-    	if(!upState.getBlock().isLeaves(upState, worldIn, pos)) {
-    		worldIn.destroyBlock(pos, true);
-    	}
+    		if(!upState.getBlock().isLeaves(upState, worldIn, pos)) {
+    			worldIn.destroyBlock(pos, true);
+    		}
 	}
 	
 	@Nullable
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return NULL_AABB;
-    }
+    	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        	return NULL_AABB;
+    	}
 	
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+        	return false;
+    	}
 	
 	@Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+    	public boolean isFullCube(IBlockState state) {
+        	return false;
+    	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
+    	public BlockRenderLayer getBlockLayer() {
+        	return BlockRenderLayer.CUTOUT;
+    	}
 	
 	@Override
 	public boolean isFoliage(IBlockAccess world, BlockPos pos) {
@@ -103,131 +103,129 @@ public class BlockApplePlant extends Block implements IGrowable, IHasModel{
 		return false;
 	}
 	
-	// From the BlockCrops Class
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return APPLE_AABB[((Integer)state.getValue(this.getAgeProperty())).intValue()];
-    }
-
-    protected PropertyInteger getAgeProperty() {
-        return AGE;
-    }
-
-    public int getMaxAge() {
-        return 7;
-    }
-
-    protected int getAge(IBlockState state) {
-        return ((Integer)state.getValue(this.getAgeProperty())).intValue();
-    }
-
-    public IBlockState withAge(int age) {
-        return this.getDefaultState().withProperty(this.getAgeProperty(), Integer.valueOf(age));
-    }
-
-    public boolean isMaxAge(IBlockState state) {
-        return ((Integer)state.getValue(this.getAgeProperty())).intValue() >= this.getMaxAge();
-    }
-
-    protected int getBonemealAgeIncrease(World worldIn) {
-        return MathHelper.getInt(worldIn.rand, 2, 5);
-    }
-
-    protected Item getSeed() {
-    	switch(Type) {
-    	case 1: return Items.GOLDEN_APPLE;
-    	default: return Items.APPLE;
+        	return APPLE_AABB[((Integer)state.getValue(this.getAgeProperty())).intValue()];
     	}
-    }
 
-    protected Item getCrop() {
-    	switch(Type) {
-    	case 1: return Items.GOLDEN_APPLE;
-    	default: return Items.APPLE;
+    	protected PropertyInteger getAgeProperty() {
+        	return AGE;
     	}
-    }
 
-    @Override
-    public void getDrops(net.minecraft.util.NonNullList<ItemStack> drops, net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        super.getDrops(drops, world, pos, state, 0);
-    }
+    	public int getMaxAge() {
+        	return 7;
+    	}
+
+    	protected int getAge(IBlockState state) {
+        	return ((Integer)state.getValue(this.getAgeProperty())).intValue();
+    	}
+
+    	public IBlockState withAge(int age) {
+       		return this.getDefaultState().withProperty(this.getAgeProperty(), Integer.valueOf(age));
+    	}
+
+    	public boolean isMaxAge(IBlockState state) {
+        	return ((Integer)state.getValue(this.getAgeProperty())).intValue() >= this.getMaxAge();
+    	}
+
+    	protected int getBonemealAgeIncrease(World worldIn) {
+        	return MathHelper.getInt(worldIn.rand, 2, 5);
+    	}
+
+    	protected Item getSeed() {
+    		switch(Type) {
+    		case 1: return Items.GOLDEN_APPLE;
+    		default: return Items.APPLE;
+    		}
+    	}
+
+    	protected Item getCrop() {
+    		switch(Type) {
+    		case 1: return Items.GOLDEN_APPLE;
+    		default: return Items.APPLE;
+    		}
+    	}
+
+    	@Override
+    	public void getDrops(net.minecraft.util.NonNullList<ItemStack> drops, net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        	super.getDrops(drops, world, pos, state, 0);
+    	}
     
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return this.isMaxAge(state) ? this.getCrop() : null;
-    }
+    	@Override
+    	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        	return this.isMaxAge(state) ? this.getCrop() : null;
+    	}
     
-    @Override
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-        return new ItemStack(this.getSeed());
-    }
+    	@Override
+    	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+        	return new ItemStack(this.getSeed());
+    	}
     
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.withAge(meta);
-    }
+    	@Override
+    	public IBlockState getStateFromMeta(int meta) {
+        	return this.withAge(meta);
+    	}
     
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return this.getAge(state);
-    }
+    	@Override
+    	public int getMetaFromState(IBlockState state) {
+        	return this.getAge(state);
+    	}
     
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
-    }
+    	@Override
+    	protected BlockStateContainer createBlockState() {
+        	return new BlockStateContainer(this, new IProperty[] {AGE});
+    	}
     
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-    	IBlockState upState = worldIn.getBlockState(pos.up());
-    	if(upState.getBlock().isLeaves(upState, worldIn, pos)) {
-    		if (worldIn.getLightFromNeighbors(pos) >= 8) {
-    			int i = this.getAge(state);
-    			if (i < this.getMaxAge()){
-    				float f = getGrowthChance(worldIn, pos);
-    				if(rand.nextInt((int)(20.0F / f) + 1) == 0) {
-    					worldIn.setBlockState(pos, this.withAge(i + 1), 2);
+    	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    		IBlockState upState = worldIn.getBlockState(pos.up());
+    		if(upState.getBlock().isLeaves(upState, worldIn, pos)) {
+    			if (worldIn.getLightFromNeighbors(pos) >= 8) {
+    				int i = this.getAge(state);
+    				if (i < this.getMaxAge()){
+    					float f = getGrowthChance(worldIn, pos);
+    					if(rand.nextInt((int)(20.0F / f) + 1) == 0) {
+    						worldIn.setBlockState(pos, this.withAge(i + 1), 2);
+    					}
     				}
     			}
+    		} else {
+    			worldIn.destroyBlock(pos, true);
     		}
-    	} else {
-    		worldIn.destroyBlock(pos, true);
     	}
-    }
 
 	private static float getGrowthChance(World worldIn, BlockPos pos) {
   		float f = 2.0F;
-        BlockPos blockpos = pos;
-        IBlockState air = Blocks.AIR.getDefaultState();
-        for (int i = -1; i <= 1; ++i) {
-            for (int j = -1; j <= 1; ++j) {
-                float f1 = 0.0F;
-                IBlockState iblockstate = worldIn.getBlockState(blockpos.add(i, 0, j));
-                if (iblockstate.getBlock().getDefaultState() == air) {
-                    f1 = 2.0F;
-                }
-                if (i != 0 || j != 0) {
-                    f1 /= 2.0F;
-                }
-                f += f1;
-            }
-        }
-        BlockPos blockposN = pos.north();
+        	BlockPos blockpos = pos;
+        	IBlockState air = Blocks.AIR.getDefaultState();
+        	for (int i = -1; i <= 1; ++i) {
+        		for (int j = -1; j <= 1; ++j) {
+                		float f1 = 0.0F;
+                		IBlockState iblockstate = worldIn.getBlockState(blockpos.add(i, 0, j));
+                		if (iblockstate.getBlock().getDefaultState() == air) {
+                    			f1 = 2.0F;
+                		}
+                		if (i != 0 || j != 0) {
+                    			f1 /= 2.0F;
+                		}
+                		f += f1;
+            		}
+        	}
+        	BlockPos blockposN = pos.north();
   		BlockPos blockposS = pos.south();
   		BlockPos blockposW = pos.west();
   		BlockPos blockposE = pos.east();
   		boolean flag = !isLeavesOrAir(worldIn, blockposN) || !isLeavesOrAir(worldIn, blockposS);
-        boolean flag1 = !isLeavesOrAir(worldIn, blockposE) || !isLeavesOrAir(worldIn, blockposW);
-
-        if (flag && flag1) {
-            f /= 2.0F;
-        } else {
-            boolean flag2 = !isLeavesOrAir(worldIn, blockposW.north()) || !isLeavesOrAir(worldIn, blockposE.north()) || !isLeavesOrAir(worldIn, blockposN.south()) || !isLeavesOrAir(worldIn, blockposW.south());
-            if (flag2) {
-                f /= 2.0F;
-            }
-        }
-        return f;
+        	boolean flag1 = !isLeavesOrAir(worldIn, blockposE) || !isLeavesOrAir(worldIn, blockposW);
+		if (flag && flag1) {
+            		f /= 2.0F;
+        	} else {
+            		boolean flag2 = !isLeavesOrAir(worldIn, blockposW.north()) || !isLeavesOrAir(worldIn, blockposE.north()) || !isLeavesOrAir(worldIn, blockposN.south()) || !isLeavesOrAir(worldIn, blockposW.south());
+            		if (flag2) {
+                		f /= 2.0F;
+            		}
+        	}
+        	return f;
   	}
 	
 	private static boolean isLeavesOrAir(World worldIn, BlockPos pos) {
@@ -247,11 +245,11 @@ public class BlockApplePlant extends Block implements IGrowable, IHasModel{
 	@Override
 	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
 		int i = this.getAge(state) + this.getBonemealAgeIncrease(worldIn);
-        int j = this.getMaxAge();
-        if (i > j) {
-            i = j;
-        }
-        worldIn.setBlockState(pos, this.withAge(i), 2);
+        	int j = this.getMaxAge();
+        	if (i > j) {
+            	i = j;
+        	}
+        	worldIn.setBlockState(pos, this.withAge(i), 2);
 	}
 	
 	@Override
