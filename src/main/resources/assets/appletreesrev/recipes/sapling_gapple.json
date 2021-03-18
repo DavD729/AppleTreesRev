@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"III",
+		"ISI",
+		"III"
+  	],
+	"key": {
+		"S": {
+			"item": "appletreesrev:sapling_apple"
+		},
+		"I": {
+			"item": "minecraft:gold_ingot"
+		}
+	},
+	
+	"result": {
+		"item": "appletreesrev:sapling_gapple"
+	}
+}

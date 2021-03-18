@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+issueTrackerURL="http://my.issue.tracker/"
+logoFile="banner.png"
+[[mods]] #mandatory
+modId="appletreesrev"
+version="1.2"
+displayName="Apple Trees Revived"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/apple-trees-revived"
+credits="To https://www.curseforge.com/minecraft/mc-mods/apple-trees Original Mod"
+authors="Dav729"
+description='''
+A Personal Port from Original Apple Trees Mod.
+
+A Simple Feature to get Apples in a simpler Way ;).
+'''
+[[dependencies.appletreesrev]]
+    modId="forge"
+    mandatory=true
+    versionRange="[25,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.appletreesrev]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.13.2]"
+    ordering="NONE"
+    side="BOTH"

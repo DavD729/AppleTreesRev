@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "appletreesrev:blocks/sapling_gapple"
+		"layer0": "appletreesrev:block/gapple_sapling"
 	}
 }

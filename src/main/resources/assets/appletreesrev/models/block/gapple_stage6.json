@@ -1,6 +1,6 @@
 {
 	"parent": "block/cross",
 	"textures": {
-		"cross": "appletreesrev:blocks/gapple_stage6"
+		"cross": "appletreesrev:block/gapple_stage6"
 	}
 }

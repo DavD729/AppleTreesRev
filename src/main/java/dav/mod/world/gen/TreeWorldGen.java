@@ -1,45 +1,28 @@
 package dav.mod.world.gen;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import dav.mod.world.gen.placement.SurfacePlacement;
+import dav.mod.world.gen.placement.TreeSurface;
+import dav.mod.world.gen.tree.NaturalAppleTreeFeature;
+import net.minecraft.init.Biomes;
+import net.minecraft.world.gen.GenerationStage.Decoration;
+import net.minecraft.world.gen.feature.CompositeFeature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
 
-import dav.mod.world.gen.tree.NaturalAppleTreeGen;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeForest;
-import net.minecraft.world.biome.BiomePlains;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.fml.common.IWorldGenerator;
-
-public class TreeWorldGen implements IWorldGenerator{
+public class TreeWorldGen {
 	
-	private final WorldGenerator APPLE = new NaturalAppleTreeGen();
-	
-	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-		switch(world.provider.getDimension()) {
-		case 1: break;
-		case 0: runGenerator(APPLE, world, random, chunkX, chunkZ, 600.0D, -1, 0, BiomePlains.class);
-				runGenerator(APPLE, world, random, chunkX, chunkZ, 350.0D, -1, 0, BiomeForest.class);
-				break;
-		case -1: break;
-		}
-	}
-	
-	private void runGenerator(WorldGenerator generator, World world, Random random, int chunkX, int chunkZ, double chancesToSpawn, int minHeight, int maxHeight, Class<?>... classes) {
+	public static void setupTreeGeneration() {
+		SurfacePlacement TreeFlowerForest = new SurfacePlacement(70, 16);
+		Biomes.FLOWER_FOREST.addFeature(Decoration.VEGETAL_DECORATION, new CompositeFeature<>(new NaturalAppleTreeFeature(), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(), TreeFlowerForest));
 		
-		ArrayList<Class<?>> classesList = new ArrayList<Class<?>>(Arrays.asList(classes));
-		int heightDiff = maxHeight - minHeight + 1;
-		for(int i = 0; i < 20; i++) {
-			BlockPos pos = new BlockPos(chunkX * 16 + 10 + random.nextInt(15), minHeight + random.nextInt(heightDiff), chunkZ * 16 + 10 + random.nextInt(15));
-			if(minHeight < 0) pos = world.getHeight(pos);
-			Class<?> biome = world.provider.getBiomeForCoords(pos).getClass();
-			if(classesList.contains(biome) || classes.length == 0) {
-				if(random.nextInt((int)chancesToSpawn) == 0) generator.generate(world, random, pos);
-			}
-		}
+		SurfacePlacement TreeGen = new SurfacePlacement(140, 12);
+		Biomes.FOREST.addFeature(Decoration.VEGETAL_DECORATION, new CompositeFeature<>(new NaturalAppleTreeFeature(), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(), TreeGen));
+		Biomes.DARK_FOREST.addFeature(Decoration.VEGETAL_DECORATION, new CompositeFeature<>(new NaturalAppleTreeFeature(), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(), TreeGen));
+		
+		SurfacePlacement TreePlainsGen = new SurfacePlacement(500, 12);
+		Biomes.PLAINS.addFeature(Decoration.VEGETAL_DECORATION, new CompositeFeature<>(new NaturalAppleTreeFeature(), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(), TreePlainsGen));
+		Biomes.SUNFLOWER_PLAINS.addFeature(Decoration.VEGETAL_DECORATION, new CompositeFeature<>(new NaturalAppleTreeFeature(), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(), TreePlainsGen));
+		
+		SurfacePlacement TreeMountGen = new SurfacePlacement(150, 12);
+		Biomes.WOODED_MOUNTAINS.addFeature(Decoration.VEGETAL_DECORATION, new CompositeFeature<>(new NaturalAppleTreeFeature(), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(), TreeMountGen));
 	}
 }
