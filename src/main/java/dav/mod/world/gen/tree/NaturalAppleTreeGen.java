@@ -17,8 +17,8 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 public class NaturalAppleTreeGen extends WorldGenAbstractTree{
 	
 	private static final IBlockState LOG = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
-    private static final IBlockState LEAF = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
-    private static final IBlockState APPLE = BlockInit.APPLE_PLANT.getDefaultState().withProperty(BlockApplePlant.AGE, Integer.valueOf(3));
+   	private static final IBlockState LEAF = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+   	private static final IBlockState APPLE = BlockInit.APPLE_PLANT.getDefaultState().withProperty(BlockApplePlant.AGE, Integer.valueOf(3));
 	
 	public NaturalAppleTreeGen() {
 		super(false);
@@ -43,10 +43,10 @@ public class NaturalAppleTreeGen extends WorldGenAbstractTree{
 					for (int i1 = Z - k; i1 <= Z + k && flag; ++i1) {
 						if (j >= 0 && j < worldIn.getHeight()) {
 							if (!this.isReplaceable(worldIn, blockpos$mutableblockpos.setPos(l, j, i1))) {
-							flag = false;
+								flag = false;
 							}
 						} else {
-						flag = false;
+							flag = false;
 						}
 					}
 				}
@@ -87,10 +87,10 @@ public class NaturalAppleTreeGen extends WorldGenAbstractTree{
 					}
 					
 					int cont = 2;
-            		int appleLayer = i - 4;
-            		this.setBlockAndNotifyAdequately(worldIn, position.add(1, appleLayer, 1), APPLE);
-            		this.setBlockAndNotifyAdequately(worldIn, position.add(-1, appleLayer, 2), APPLE);
-            		for(int xPos = -2; xPos < 3; xPos++) {
+            				int appleLayer = i - 4;
+            				this.setBlockAndNotifyAdequately(worldIn, position.add(1, appleLayer, 1), APPLE);
+            				this.setBlockAndNotifyAdequately(worldIn, position.add(-1, appleLayer, 2), APPLE);
+            				for(int xPos = -2; xPos < 3; xPos++) {
     					for(int zPos = -2; zPos < 3; zPos++) {
     						if(rand.nextInt(4) == 0 && cont < 8) {
     							if(isAirOrLeaves(worldIn, position.add(xPos, appleLayer, zPos)) && isLeaves(worldIn, position.add(xPos, appleLayer + 1, zPos))) {
@@ -103,7 +103,7 @@ public class NaturalAppleTreeGen extends WorldGenAbstractTree{
 					
 					return true;
 				} else {
-				return false;
+					return false;
 				}
 			}
 		} else {
