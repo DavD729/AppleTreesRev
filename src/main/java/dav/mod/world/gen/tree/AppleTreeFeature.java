@@ -80,10 +80,10 @@ public class AppleTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 					}
 					
 					int cont = 2;
-            		int appleLayer = i - 4;
-            		this.setBlockState(worldIn, pos.add(1, appleLayer, 1), APPLE);
-            		this.setBlockState(worldIn, pos.add(-1, appleLayer, 2), APPLE);
-            		for(int xPos = -2; xPos < 3; xPos++) {
+            				int appleLayer = i - 4;
+            				this.setBlockState(worldIn, pos.add(1, appleLayer, 1), APPLE);
+            				this.setBlockState(worldIn, pos.add(-1, appleLayer, 2), APPLE);
+            				for(int xPos = -2; xPos < 3; xPos++) {
     					for(int zPos = -2; zPos < 3; zPos++) {
     						if(rand.nextInt(4) == 0 && cont < 8) {
     							if(isAirOrLeaves(worldIn, pos.add(xPos, appleLayer, zPos)) && isLeaves(worldIn, pos.add(xPos, appleLayer + 1, zPos))) {
