@@ -56,14 +56,14 @@ public class Main {
 	}
 	
 	private void enqueueIMC(final InterModEnqueueEvent event) {
-    }
+    	}
 
-    private void processIMC(final InterModProcessEvent event) {
-    }
+    	private void processIMC(final InterModProcessEvent event) {
+    	}
 
-    @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
-    }
+    	@SubscribeEvent
+    	public void onServerStarting(FMLServerStartingEvent event) {
+	}
 	
 	public static ResourceLocation getLocation(String path) {
 		return new ResourceLocation(modid, path);
