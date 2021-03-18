@@ -32,11 +32,11 @@ public class AppleBlockSapling extends BlockBush implements IGrowable, IHasModel
 	private String type;
 	
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
-    protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
+    	protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
     
-    public AppleBlockSapling(String name) {
+   	public AppleBlockSapling(String name) {
     	
-    	type = name.replaceAll("sapling_", "").trim();
+    		type = name.replaceAll("sapling_", "").trim();
 		setUnlocalizedName(name);
 		setRegistryName(name);
 		setSoundType(SoundType.PLANT);
@@ -46,29 +46,27 @@ public class AppleBlockSapling extends BlockBush implements IGrowable, IHasModel
 		BlockInit.BLOCKS.add(this);
 		ItemInit.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
 	}
+    	
+    	@Override
+    	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    		return SAPLING_AABB;
+    	}
     
-  //Sapling Shape
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-    	return SAPLING_AABB;
-    }
+    	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+    		return NULL_AABB;
+    	}
     
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-    	return NULL_AABB;
-    }
+    	@Override
+    	public boolean isOpaqueCube(IBlockState state) {
+    		return false;
+    	}
     
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-    	return false;
-    }
-    
-    @Override
-    public boolean isFullCube(IBlockState state) {
-    	return false;
-    }
+    	@Override
+    	public boolean isFullCube(IBlockState state) {
+    		return false;
+    	}
 	
-  //Variants
   	@Override
   	public IBlockState getStateFromMeta(int meta) {
   		return this.getDefaultState().withProperty(STAGE, Integer.valueOf((meta & 8) >> 3));
@@ -88,20 +86,19 @@ public class AppleBlockSapling extends BlockBush implements IGrowable, IHasModel
   	
   	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        if (!worldIn.isRemote) {
-            super.updateTick(worldIn, pos, state, rand);
-            if (worldIn.getLightFromNeighbors(pos) >= 9 && rand.nextInt(7) == 0) {
-                this.grow(worldIn, rand, pos, state);
-            }
-        }
-    }
+        	if (!worldIn.isRemote) {
+            		super.updateTick(worldIn, pos, state, rand);
+            		if (worldIn.getLightFromNeighbors(pos) >= 9 && rand.nextInt(7) == 0) {
+                		this.grow(worldIn, rand, pos, state);
+            		}
+        	}
+    	}
   	
 	@Override
 	public void registerModels() {
 		Main.proxy.registerModel(Item.getItemFromBlock(this), 0);
 	}
 	
-	//Tree Code
 	@Override
 	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
 		if(((Integer)state.getValue(STAGE)).intValue() == 0) {
@@ -113,22 +110,22 @@ public class AppleBlockSapling extends BlockBush implements IGrowable, IHasModel
 	
 	public void generateTree(World world, Random rand, BlockPos pos, IBlockState state) {
 		if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, pos)) return;
-        WorldGenerator worldgenerator = (WorldGenerator)(rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true));
-        switch(type) {
-        case "apple": worldgenerator = new AppleTreeGen();
-        			  break;
-        case "gapple": worldgenerator = new GoldAppleTreeGen();
-        }
-        IBlockState iblockstate2 = Blocks.AIR.getDefaultState();
-        world.setBlockState(pos, iblockstate2, 4);
-        if(!worldgenerator.generate(world, rand, pos)) {
-        	world.setBlockState(pos, state, 4);
-        }
-    }
+        	WorldGenerator worldgenerator = (WorldGenerator)(rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true));
+        	switch(type) {
+        	case "apple": worldgenerator = new AppleTreeGen();
+        		      break;
+		case "gapple": worldgenerator = new GoldAppleTreeGen();
+        	}
+        	IBlockState iblockstate2 = Blocks.AIR.getDefaultState();
+        	world.setBlockState(pos, iblockstate2, 4);
+        	if(!worldgenerator.generate(world, rand, pos)) {
+        		world.setBlockState(pos, state, 4);
+        	}
+    	}
 		
 	@Override
 	public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
-			return true;
+		return true;
 	}
 		
 	@Override
