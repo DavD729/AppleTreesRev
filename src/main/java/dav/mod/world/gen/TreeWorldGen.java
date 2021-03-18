@@ -20,11 +20,12 @@ public class TreeWorldGen implements IWorldGenerator{
 	
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+		
 		switch(world.provider.getDimension()) {
 		case 1: break;
 		case 0: runGenerator(APPLE, world, random, chunkX, chunkZ, 600.0D, -1, 0, BiomePlains.class);
-				runGenerator(APPLE, world, random, chunkX, chunkZ, 350.0D, -1, 0, BiomeForest.class);
-				break;
+			runGenerator(APPLE, world, random, chunkX, chunkZ, 350.0D, -1, 0, BiomeForest.class);
+			break;
 		case -1: break;
 		}
 	}
