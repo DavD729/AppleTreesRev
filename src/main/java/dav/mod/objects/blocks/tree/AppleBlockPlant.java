@@ -48,9 +48,9 @@ public class AppleBlockPlant extends Block implements IGrowable{
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		IBlockState upState = worldIn.getBlockState(pos.up());
-    	if(!upState.isIn(BlockTags.LEAVES)) {
-    		worldIn.destroyBlock(pos, true);
-    	}
+    		if(!upState.isIn(BlockTags.LEAVES)) {
+    			worldIn.destroyBlock(pos, true);
+    		}
 	}
 	
 	@Override
@@ -97,19 +97,19 @@ public class AppleBlockPlant extends Block implements IGrowable{
 	@Override
 	public void tick(IBlockState state, World worldIn, BlockPos pos, Random rand) {
 		IBlockState upState = worldIn.getBlockState(pos.up());
-    	if(upState.isIn(BlockTags.LEAVES)) {
-    		if (worldIn.getLight(pos) >= 8) {
-    			int i = this.getAge(state);
-    			if (i < this.getMaxAge()){
-    				float f = getGrowthChance(worldIn, pos);
-    				if(rand.nextInt((int)(20.0F / f) + 1) == 0) {
-    					worldIn.setBlockState(pos, this.withAge(i + 1), 2);
+    		if(upState.isIn(BlockTags.LEAVES)) {
+    			if (worldIn.getLight(pos) >= 8) {
+    				int i = this.getAge(state);
+    				if (i < this.getMaxAge()){
+    					float f = getGrowthChance(worldIn, pos);
+    					if(rand.nextInt((int)(20.0F / f) + 1) == 0) {
+    						worldIn.setBlockState(pos, this.withAge(i + 1), 2);
+    					}
     				}
     			}
+    		} else {
+    			worldIn.destroyBlock(pos, true);
     		}
-    	} else {
-    		worldIn.destroyBlock(pos, true);
-    	}
 	}
 	
 	public void grow(World worldIn, BlockPos pos, IBlockState state) {
@@ -125,37 +125,37 @@ public class AppleBlockPlant extends Block implements IGrowable{
 	
 	private static float getGrowthChance(World worldIn, BlockPos pos) {
   		float f = 2.0F;
-        BlockPos blockpos = pos;
-        IBlockState air = Blocks.AIR.getDefaultState();
-        for (int i = -1; i <= 1; ++i) {
-            for (int j = -1; j <= 1; ++j) {
-                float f1 = 0.0F;
-                IBlockState iblockstate = worldIn.getBlockState(blockpos.add(i, 0, j));
-                if (iblockstate.getBlock().getDefaultState() == air) {
-                    f1 = 2.0F;
-                }
-                if (i != 0 || j != 0) {
-                    f1 /= 2.0F;
-                }
-                f += f1;
-            }
-        }
-        BlockPos blockposN = pos.north();
+        	BlockPos blockpos = pos;
+        	IBlockState air = Blocks.AIR.getDefaultState();
+        	for (int i = -1; i <= 1; ++i) {
+            		for (int j = -1; j <= 1; ++j) {
+                		float f1 = 0.0F;
+                		IBlockState iblockstate = worldIn.getBlockState(blockpos.add(i, 0, j));
+                		if (iblockstate.getBlock().getDefaultState() == air) {
+                    			f1 = 2.0F;
+                		}
+               			if (i != 0 || j != 0) {
+                    			f1 /= 2.0F;
+               			}
+                		f += f1;
+            		}
+        	}
+        	BlockPos blockposN = pos.north();
   		BlockPos blockposS = pos.south();
   		BlockPos blockposW = pos.west();
   		BlockPos blockposE = pos.east();
   		boolean flag = !isLeavesOrAir(worldIn, blockposN) || !isLeavesOrAir(worldIn, blockposS);
-        boolean flag1 = !isLeavesOrAir(worldIn, blockposE) || !isLeavesOrAir(worldIn, blockposW);
+        	boolean flag1 = !isLeavesOrAir(worldIn, blockposE) || !isLeavesOrAir(worldIn, blockposW);
 
-        if (flag && flag1) {
-            f /= 2.0F;
-        } else {
-            boolean flag2 = !isLeavesOrAir(worldIn, blockposW.north()) || !isLeavesOrAir(worldIn, blockposE.north()) || !isLeavesOrAir(worldIn, blockposN.south()) || !isLeavesOrAir(worldIn, blockposW.south());
-            if (flag2) {
-                f /= 2.0F;
-            }
-        }
-        return f;
+        	if (flag && flag1) {
+            		f /= 2.0F;
+        	} else {
+			boolean flag2 = !isLeavesOrAir(worldIn, blockposW.north()) || !isLeavesOrAir(worldIn, blockposE.north()) || !isLeavesOrAir(worldIn, blockposN.south()) || !isLeavesOrAir(worldIn, blockposW.south());
+            		if (flag2) {
+                		f /= 2.0F;
+            		}
+        	}
+        	return f;
   	}
 	
 	private static boolean isLeavesOrAir(World worldIn, BlockPos pos) {
