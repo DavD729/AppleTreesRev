@@ -1,0 +1,12 @@
+{
+	"variants": {
+		"age=0": { "model": "appletreesrev:apple_stage0"},
+		"age=1": { "model": "appletreesrev:apple_stage1"},
+		"age=2": { "model": "appletreesrev:apple_stage2"},
+		"age=3": { "model": "appletreesrev:apple_stage3"},
+		"age=4": { "model": "appletreesrev:apple_stage4"},
+		"age=5": { "model": "appletreesrev:apple_stage5"},
+		"age=6": { "model": "appletreesrev:gapple_stage6"},
+		"age=7": { "model": "appletreesrev:gapple_stage7"}
+	}
+}

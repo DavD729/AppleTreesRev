@@ -1,0 +1,6 @@
+{
+	"parent": "block/cross",
+	"textures": {
+		"cross": "appletreesrev:blocks/sapling_gapple"
+	}
+}
