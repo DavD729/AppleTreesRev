@@ -1,10 +1,9 @@
 modLoader="javafml"
 loaderVersion="[25,)"
-issueTrackerURL="http://my.issue.tracker/"
 logoFile="banner.png"
-[[mods]] #mandatory
+[[mods]]
 modId="appletreesrev"
-version="1.2"
+version="1.1"
 displayName="Apple Trees Revived"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/apple-trees-revived"
 credits="To https://www.curseforge.com/minecraft/mc-mods/apple-trees Original Mod"
