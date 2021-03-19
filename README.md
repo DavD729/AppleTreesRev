@@ -30,5 +30,8 @@ v1.1
 - Added Natural World Generation
 
     *- Only Apple Trees will spawn on Forests & Plains Biomes*
+
+v1.2
+- Natural Trees will spawn with Apple Plants with an Age Of 3
     
 > This Repository is for Anyone who wants to Add new Features or Change it for Good.
