@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:block",
+	"pools": [{
+		"rolls": 1,
+		"entries": [{
+			"type": "minecraft:item",
+			"conditions": [{
+				"condition": "minecraft:block_state_property",
+				"block": "appletreesrev:gapple_plant",
+				"properties": {
+					"age": "7"
+				}
+			}],
+			"name": "minecraft:golden_apple"
+		}]
+	}],
+	"functions": [{
+		"function": "minecraft:explosion_decay"
+	}]
+}

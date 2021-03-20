@@ -2,11 +2,11 @@ package dav.mod.lists;
 
 import java.util.Random;
 
-import net.minecraft.block.trees.AbstractTree;
+import net.minecraft.block.trees.Tree;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
-public class CustomTree extends AbstractTree {
+public class CustomTree extends Tree {
 	
 	private AbstractTreeFeature<NoFeatureConfig> tree;
 	

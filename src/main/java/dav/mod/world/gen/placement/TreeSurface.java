@@ -1,34 +1,36 @@
 package dav.mod.world.gen.placement;
 
 import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import com.mojang.datafixers.Dynamic;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.IChunkGenSettings;
-import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.placement.BasePlacement;
+import net.minecraft.world.gen.placement.Placement;
 
-public class TreeSurface extends BasePlacement<SurfacePlacement>{
+public class TreeSurface extends Placement<SurfacePlacement>{
+
+	public TreeSurface(Function<Dynamic<?>, ? extends SurfacePlacement> configFactoryIn) {
+		super(configFactoryIn);
+	}
 
 	@Override
-	public <C extends IFeatureConfig> boolean generate(IWorld worldIn, IChunkGenerator<? extends IChunkGenSettings> chunkGenerator, Random random, BlockPos pos, 
-		SurfacePlacement placementConfig, Feature<C> featureIn, C featureConfig) {
-		int chance = placementConfig.surfaceChance;
-		int i = placementConfig.genChance;
-		boolean flag = false;
-		if(i > 0) {
-	    	for(int j = 0; j < i; ++j) {
-	    		if(random.nextInt(chance) == 0) {
-	    			int k = random.nextInt(16);
-	    			int l = random.nextInt(16);
-	    			featureIn.func_212245_a(worldIn, chunkGenerator, random, worldIn.getHeight(Heightmap.Type.MOTION_BLOCKING, pos.add(k, 0, l)), featureConfig);
-	    			flag = true;
-	    		}
-	    	}
+	public Stream<BlockPos> getPositions(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generatorIn, Random random, SurfacePlacement configIn, BlockPos pos) {
+		if(random.nextInt(configIn.genChance) == 0) {
+			int i = random.nextInt(configIn.surfaceChance) + 1;
+			return IntStream.range(0, i).mapToObj((MapObject) -> {
+				int j = random.nextInt(16);
+				int k = random.nextInt(16);
+				return worldIn.getHeight(Heightmap.Type.MOTION_BLOCKING, pos.add(j, 0, k));
+			});
+		} else {
+			return Stream.empty();
 		}
-		return flag;
 	}
 }

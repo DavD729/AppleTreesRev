@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 
 public class BlockList {
 	
-	public static Block apple_sapling;
-	public static Block gapple_sapling;
+	public static Block APPLE_SAPLING;
+	public static Block GAPPLE_SAPLING;
 	
-	public static Block apple_plant;
-	public static Block goldapple_plant;
+	public static Block APPLE_PLANT;
+	public static Block GAPPLE_PLANT;
 }

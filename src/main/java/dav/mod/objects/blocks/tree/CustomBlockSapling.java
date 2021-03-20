@@ -1,11 +1,12 @@
 package dav.mod.objects.blocks.tree;
 
-import dav.mod.lists.CustomTree;
-import net.minecraft.block.BlockSapling;
+import net.minecraft.block.SaplingBlock;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.trees.Tree;
 
-public class CustomBlockSapling extends BlockSapling {
+public class CustomBlockSapling extends SaplingBlock{
 	
-	public CustomBlockSapling(CustomTree tree, Properties prop) {
-		super(tree, prop.doesNotBlockMovement().needsRandomTick());
+	public CustomBlockSapling(Tree tree, Properties prop) {
+		super(tree, prop.doesNotBlockMovement().tickRandomly().sound(SoundType.PLANT));
 	}
 }

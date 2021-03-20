@@ -4,6 +4,6 @@ import net.minecraft.item.Item;
 
 public class ItemList {
 	
-	public static Item apple_sapling;
-	public static Item gapple_sapling;
+	public static Item APPLE_SAPLING;
+	public static Item GAPPLE_SAPLING;
 }
