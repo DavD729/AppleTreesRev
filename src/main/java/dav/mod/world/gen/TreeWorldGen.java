@@ -1,29 +1,29 @@
 package dav.mod.world.gen;
 
-import dav.mod.world.gen.placement.SurfacePlacement;
-import dav.mod.world.gen.placement.TreeSurface;
-import dav.mod.world.gen.tree.NaturalAppleTreeFeature;
+import dav.mod.world.gen.decorator.SurfaceDecorator;
+import dav.mod.world.gen.decorator.TreeDecorator;
+import dav.mod.world.gen.feature.NaturalAppleTreeFeature;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.gen.GenerationStage.Decoration;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.GenerationStep.Feature;
+import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 
 public class TreeWorldGen {
 	
-	public static void setupTreeGeneration() {
-		SurfacePlacement PlainsPlacement = new SurfacePlacement(1, 45);
-		Biomes.PLAINS.addFeature(Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(new NaturalAppleTreeFeature(NoFeatureConfig::deserialize), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(SurfacePlacement::deserialize), PlainsPlacement));
-		Biomes.SUNFLOWER_PLAINS.addFeature(Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(new NaturalAppleTreeFeature(NoFeatureConfig::deserialize), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(SurfacePlacement::deserialize), PlainsPlacement));
+	public static void addBiomeFeatures() {
+		SurfaceDecorator PlainsDecorator = new SurfaceDecorator(1, 45);
+		Biomes.PLAINS.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), PlainsDecorator));
+		Biomes.SUNFLOWER_PLAINS.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), PlainsDecorator));
 		
-		SurfacePlacement ForestPlacement = new SurfacePlacement(1, 25);
-		Biomes.FOREST.addFeature(Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(new NaturalAppleTreeFeature(NoFeatureConfig::deserialize), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(SurfacePlacement::deserialize), ForestPlacement));
-		Biomes.DARK_FOREST.addFeature(Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(new NaturalAppleTreeFeature(NoFeatureConfig::deserialize), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(SurfacePlacement::deserialize), ForestPlacement));
+		SurfaceDecorator ForestDecorator = new SurfaceDecorator(1, 25);
+		Biomes.FOREST.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), ForestDecorator));
+		Biomes.DARK_FOREST.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), ForestDecorator));
 		
-		SurfacePlacement FlowerPlacement = new SurfacePlacement(3, 10);
-		Biomes.FLOWER_FOREST.addFeature(Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(new NaturalAppleTreeFeature(NoFeatureConfig::deserialize), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(SurfacePlacement::deserialize), FlowerPlacement));
+		SurfaceDecorator FlowerDecorator = new SurfaceDecorator(3, 10);
+		Biomes.FLOWER_FOREST.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), FlowerDecorator));
 		
-		SurfacePlacement MountainPlacement = new SurfacePlacement(2, 30);
-		Biomes.WOODED_MOUNTAINS.addFeature(Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(new NaturalAppleTreeFeature(NoFeatureConfig::deserialize), IFeatureConfig.NO_FEATURE_CONFIG, new TreeSurface(SurfacePlacement::deserialize), MountainPlacement));
+		SurfaceDecorator MountainDecorator = new SurfaceDecorator(2, 30);
+		Biomes.WOODED_MOUNTAINS.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), MountainDecorator));
+		
 	}
 }
