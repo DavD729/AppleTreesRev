@@ -125,32 +125,32 @@ public class BlockApplePlant extends Block implements Fertilizable {
 
 	protected static float getAvailableMoisture(Block block, BlockView world, BlockPos pos) {
 		float f = 2.0F;
-        BlockPos blockpos = pos;
-        BlockState air = Blocks.AIR.getDefaultState();
-        for (int i = -1; i <= 1; ++i) {
-            for (int j = -1; j <= 1; ++j) {
-                float f1 = 0.0F;
-                BlockState iblockstate = world.getBlockState(blockpos.add(i, 0, j));
-                if (iblockstate.getBlock().getDefaultState() == air) f1 = 2.0F;
-                if (i != 0 || j != 0) f1 /= 2.0F;
-                f += f1;
-            }
-        }
-        BlockPos blockposN = pos.north();
+		BlockPos blockpos = pos;
+		BlockState air = Blocks.AIR.getDefaultState();
+		for (int i = -1; i <= 1; ++i) {
+			for (int j = -1; j <= 1; ++j) {
+				float f1 = 0.0F;
+                		BlockState iblockstate = world.getBlockState(blockpos.add(i, 0, j));
+                		if (iblockstate.getBlock().getDefaultState() == air) f1 = 2.0F;
+                		if (i != 0 || j != 0) f1 /= 2.0F;
+                		f += f1;
+            		}
+        	}
+        	BlockPos blockposN = pos.north();
   		BlockPos blockposS = pos.south();
   		BlockPos blockposW = pos.west();
   		BlockPos blockposE = pos.east();
   		boolean flag = !isLeavesOrAir(world, blockposN) || !isLeavesOrAir(world, blockposS);
-        boolean flag1 = !isLeavesOrAir(world, blockposE) || !isLeavesOrAir(world, blockposW);
-
-        if (flag && flag1) {
-            f /= 2.0F;
-        } else {
-            boolean flag2 = !isLeavesOrAir(world, blockposW.north()) || !isLeavesOrAir(world, blockposE.north()) || !isLeavesOrAir(world, blockposN.south()) || !isLeavesOrAir(world, blockposW.south());
-            if (flag2) {
-                f /= 2.0F;
-            }
-        }
+		boolean flag1 = !isLeavesOrAir(world, blockposE) || !isLeavesOrAir(world, blockposW);
+		
+		if (flag && flag1) {
+            		f /= 2.0F;
+        	} else {
+            		boolean flag2 = !isLeavesOrAir(world, blockposW.north()) || !isLeavesOrAir(world, blockposE.north()) || !isLeavesOrAir(world, blockposN.south()) || !isLeavesOrAir(world, blockposW.south());
+            		if (flag2) {
+				f /= 2.0F;
+            		}
+        	}
         return f;
   	}
 	
