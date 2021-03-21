@@ -12,12 +12,12 @@ import com.mojang.datafixers.types.DynamicOps;
 import dav.mod.init.BlockInit;
 import dav.mod.objects.blocks.tree.ApplePlantBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.treedecorator.BeehiveTreeDecorator;
+import net.minecraft.world.gen.decorator.BeehiveTreeDecorator;
 
 public class AppleDecorator extends BeehiveTreeDecorator{
 	
@@ -30,43 +30,43 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 		this.isNatural = isNatural;
 	}
 	
-	public <T> AppleDecorator(Dynamic<T> Map) {
-		this(Map.get("drop").asInt(0), Map.get("isnatural").asBoolean(false));
+	public <T> AppleDecorator(Dynamic<T> dynamic) {
+		this(dynamic.get("drop").asInt(0), dynamic.get("isnatural").asBoolean(false));
 	}
 
 	@Override
-	public <T> T serialize(DynamicOps<T> DynamicMap) {
-		return (new Dynamic<>(DynamicMap, DynamicMap.createMap(ImmutableMap.of(
-			DynamicMap.createString("type"), 
-			DynamicMap.createString(Registry.TREE_DECORATOR_TYPE.getKey(this.field_227422_a_).toString()), 
-			DynamicMap.createString("drop"),
-			DynamicMap.createInt(this.drop),
-			DynamicMap.createString("isnatural"),
-			DynamicMap.createBoolean(this.isNatural))))).getValue();
+	public <T> T serialize(DynamicOps<T> ops) {
+		return (new Dynamic<>(ops, ops.createMap(ImmutableMap.of(
+				ops.createString("type"), 
+				ops.createString(Registry.TREE_DECORATOR_TYPE.getId(this.type).toString()), 
+				ops.createString("drop"),
+				ops.createInt(this.drop),
+				ops.createString("isnatural"),
+				ops.createBoolean(false))))).getValue(); 
 	}
 
 	@Override
-	public void func_225576_a_(IWorld world, Random rand, List<BlockPos> logPositions, List<BlockPos> leavesPositions, Set<BlockPos> Set, MutableBoundingBox blockBox) {
+	public void generate(IWorld world, Random rand, List<BlockPos> logPositions, List<BlockPos> leavesPositions, Set<BlockPos> Set, BlockBox Box) {
 		int i = !leavesPositions.isEmpty() ? Math.max(leavesPositions.get(0).getY() - 1, logPositions.get(0).getY()) : Math.min(logPositions.get(0).getY() + 1 + rand.nextInt(3), logPositions.get(logPositions.size() - 1).getY());
         List<BlockPos> list = logPositions.stream().filter((BlockPos) -> {
-        	return BlockPos.getY() == i;
+           return BlockPos.getY() == i;
         }).collect(Collectors.toList());
         if(!list.isEmpty()) {
         	BlockPos AppleLayerPos = list.get(rand.nextInt(list.size()));
         	BlockState AppleType = this.getDrop();
 			int cont = 2;
-			this.func_227423_a_(world, AppleLayerPos.add(1, 0, 1), AppleType, Set, blockBox);
-			this.func_227423_a_(world, AppleLayerPos.add(-1, 0, 2), AppleType, Set, blockBox);
+			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(1, 0, 1), AppleType, Set, Box);
+			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(-1, 0, 2), AppleType, Set, Box);
         	for(int xPos = -2; xPos < 3; xPos++) {
 				for(int zPos = -2; zPos < 3; zPos++) {
 					if(rand.nextInt(4) == 0 && cont < 8) {
 						if(isAirOrLeaves(world, AppleLayerPos.add(xPos, 0, zPos)) && isLeaves(world, AppleLayerPos.add(xPos, 1, zPos))) {
-							this.func_227423_a_(world, AppleLayerPos.add(xPos, 0, zPos), AppleType, Set, blockBox);
+							this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(xPos, 0, zPos), AppleType, Set, Box);
 							cont++;
 						}
 					}
 				}
-			}	
+			}
         }
 	}
 	
@@ -81,10 +81,10 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 	}
 	
 	protected static boolean isAirOrLeaves(IWorld world, BlockPos pos) {
-		return world.isAirBlock(pos) || world.getBlockState(pos).isIn(BlockTags.LEAVES);
+		return world.getBlockState(pos).isAir() || world.getBlockState(pos).matches(BlockTags.LEAVES);
 	}
 	
 	protected static boolean isLeaves(IWorld world, BlockPos pos) {
-		return world.getBlockState(pos).isIn(BlockTags.LEAVES);
+		return world.getBlockState(pos).matches(BlockTags.LEAVES);
 	}
 }

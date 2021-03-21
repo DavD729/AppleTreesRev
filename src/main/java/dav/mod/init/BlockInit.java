@@ -1,20 +1,30 @@
 package dav.mod.init;
 
-import dav.mod.Main;
 import dav.mod.objects.blocks.tree.ApplePlantBlock;
-import dav.mod.objects.blocks.tree.AppleSaplingBlock;
+import dav.mod.objects.blocks.tree.CustomSaplingBlock;
 import dav.mod.objects.blocks.tree.CustomTree;
 import dav.mod.world.gen.TreeWorldGen;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Material;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.Items;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.world.gen.feature.Feature;
 
 public class BlockInit {
 	
-	public static Block APPLE_PLANT = new ApplePlantBlock(Block.Properties.create(Material.PLANTS), Items.APPLE).setRegistryName(Main.RegistryEvents.getPath("apple_plant"));
-	public static Block GAPPLE_PLANT = new ApplePlantBlock(Block.Properties.create(Material.PLANTS), Items.GOLDEN_APPLE).setRegistryName(Main.RegistryEvents.getPath("gapple_plant"));
+	public static final Block APPLE_PLANT = new ApplePlantBlock(FabricBlockSettings.of(Material.PLANT).sounds(BlockSoundGroup.GRASS).ticksRandomly(), Items.APPLE);
+	public static final Block GAPPLE_PLANT = new ApplePlantBlock(FabricBlockSettings.of(Material.PLANT).sounds(BlockSoundGroup.GRASS).ticksRandomly(), Items.GOLDEN_APPLE);
 	
-	public static Block APPLE_SAPLING = new AppleSaplingBlock(new CustomTree(Feature.NORMAL_TREE.withConfiguration(TreeWorldGen.APPLE_TREE_CONFIG)), Block.Properties.create(Material.PLANTS)).setRegistryName(Main.RegistryEvents.getPath("apple_sapling"));
-	public static Block GAPPLE_SAPLING = new AppleSaplingBlock(new CustomTree(Feature.NORMAL_TREE.withConfiguration(TreeWorldGen.GOLD_APPLE_TREE_CONFIG)), Block.Properties.create(Material.PLANTS)).setRegistryName(Main.RegistryEvents.getPath("gapple_sapling"));
+	public static final Block APPLE_SAPLING = new CustomSaplingBlock(new CustomTree(Feature.NORMAL_TREE.configure(TreeWorldGen.APPLE_TREE_CONFIG)), FabricBlockSettings.of(Material.PLANT).sounds(BlockSoundGroup.GRASS).ticksRandomly());
+	public static final Block GAPPLE_SAPLING = new CustomSaplingBlock(new CustomTree(Feature.NORMAL_TREE.configure(TreeWorldGen.GOLD_APPLE_TREE_CONFIG)), FabricBlockSettings.of(Material.PLANT).sounds(BlockSoundGroup.GRASS).ticksRandomly());
+	
+	public static void renderCutoutBlocks() {
+		BlockRenderLayerMap.INSTANCE.putBlock(APPLE_SAPLING, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(GAPPLE_SAPLING, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(APPLE_PLANT, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(GAPPLE_PLANT, RenderLayer.getCutout());
+	}
 }
