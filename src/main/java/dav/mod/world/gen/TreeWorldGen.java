@@ -1,29 +1,50 @@
 package dav.mod.world.gen;
 
-import dav.mod.world.gen.decorator.SurfaceDecorator;
-import dav.mod.world.gen.decorator.TreeDecorator;
-import dav.mod.world.gen.feature.NaturalAppleTreeFeature;
-import net.minecraft.world.biome.Biome;
+import com.google.common.collect.ImmutableList;
+
+import dav.mod.init.BlockInit;
+import dav.mod.world.gen.decorator.AppleDecorator;
+import dav.mod.world.gen.placement.SurfacePlacement;
+import dav.mod.world.gen.placement.TreeSurface;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.gen.GenerationStep.Feature;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
+import net.minecraft.world.gen.treedecorator.BeehiveTreeDecorator;
 
 public class TreeWorldGen {
 	
-	public static void addBiomeFeatures() {
-		SurfaceDecorator PlainsDecorator = new SurfaceDecorator(1, 45);
-		Biomes.PLAINS.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), PlainsDecorator));
-		Biomes.SUNFLOWER_PLAINS.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), PlainsDecorator));
-		
-		SurfaceDecorator ForestDecorator = new SurfaceDecorator(1, 25);
-		Biomes.FOREST.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), ForestDecorator));
-		Biomes.DARK_FOREST.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), ForestDecorator));
-		
-		SurfaceDecorator FlowerDecorator = new SurfaceDecorator(3, 10);
-		Biomes.FLOWER_FOREST.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), FlowerDecorator));
-		
-		SurfaceDecorator MountainDecorator = new SurfaceDecorator(2, 30);
-		Biomes.WOODED_MOUNTAINS.addFeature(Feature.VEGETAL_DECORATION, Biome.configureFeature(new NaturalAppleTreeFeature(DefaultFeatureConfig::deserialize), DefaultFeatureConfig.DEFAULT, new TreeDecorator(SurfaceDecorator::deserialize), MountainDecorator));
-		
+	public static final BlockState OAK_LOG = Blocks.OAK_LOG.getDefaultState();
+	public static final BlockState OAK_LEAVES = Blocks.OAK_LEAVES.getDefaultState();
+	
+	public static final TreeFeatureConfig APPLE_TREE_CONFIG = (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new BlobFoliagePlacer(2, 0)))
+		.baseHeight(5).heightRandA(2).foliageHeight(3).ignoreVines().decorators(ImmutableList.of(new BeehiveTreeDecorator(0.05F), new AppleDecorator(0, false)))
+		.setSapling((net.minecraftforge.common.IPlantable)BlockInit.APPLE_SAPLING).build();
+	
+	public static final TreeFeatureConfig GOLD_APPLE_TREE_CONFIG = (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new BlobFoliagePlacer(2, 0)))
+		.baseHeight(5).heightRandA(2).foliageHeight(3).ignoreVines().decorators(ImmutableList.of(new BeehiveTreeDecorator(0.05F), new AppleDecorator(1, false)))
+		.setSapling((net.minecraftforge.common.IPlantable)BlockInit.GAPPLE_SAPLING).build();
+	
+	public static final TreeFeatureConfig NATURAL_APPLE_TREE_CONFIG = (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new BlobFoliagePlacer(2, 0)))
+		.baseHeight(5).heightRandA(2).foliageHeight(3).ignoreVines().decorators(ImmutableList.of(new BeehiveTreeDecorator(0.05F), new AppleDecorator(0, true)))
+		.setSapling((net.minecraftforge.common.IPlantable)BlockInit.APPLE_SAPLING).build();
+	
+	public static void setupTreeGeneration() {
+		Biomes.PLAINS.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
+			.configure(new SurfacePlacement(1, 60))));
+		Biomes.SUNFLOWER_PLAINS.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
+			.configure(new SurfacePlacement(1, 55))));
+		Biomes.FOREST.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
+			.configure(new SurfacePlacement(1, 25))));
+		Biomes.DARK_FOREST.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
+			.configure(new SurfacePlacement(1, 20))));
+		Biomes.FLOWER_FOREST.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
+			.configure(new SurfacePlacement(3, 10))));
+		Biomes.WOODED_MOUNTAINS.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
+			.configure(new SurfacePlacement(2, 35))));		
 	}
 }

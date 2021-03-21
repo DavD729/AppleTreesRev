@@ -1,20 +1,20 @@
 package dav.mod.init;
 
-import dav.mod.objects.block.tree.BlockApplePlant;
-import dav.mod.objects.block.tree.CustomSaplingBlock;
-import dav.mod.world.gen.feature.AppleTreeFeature;
-import dav.mod.world.gen.feature.GoldenAppleTreeFeature;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import dav.mod.Main;
+import dav.mod.objects.blocks.tree.ApplePlantBlock;
+import dav.mod.objects.blocks.tree.AppleSaplingBlock;
+import dav.mod.objects.blocks.tree.CustomTree;
+import dav.mod.world.gen.TreeWorldGen;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Items;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
 
 public class BlockInit {
 	
-	public static final Block APPLE_PLANT = new BlockApplePlant(FabricBlockSettings.of(Material.PLANT).sounds(BlockSoundGroup.GRASS).ticksRandomly(), Items.APPLE);
-	public static final Block GAPPLE_PLANT = new BlockApplePlant(FabricBlockSettings.of(Material.PLANT).sounds(BlockSoundGroup.GRASS).ticksRandomly(), Items.GOLDEN_APPLE);
-	public static final Block APPLE_SAPLING = new CustomSaplingBlock(new CustomTree(new AppleTreeFeature(DefaultFeatureConfig::deserialize)), FabricBlockSettings.of(Material.PLANT).sounds(BlockSoundGroup.GRASS).ticksRandomly());
-	public static final Block GAPPLE_SAPLING = new CustomSaplingBlock(new CustomTree(new GoldenAppleTreeFeature(DefaultFeatureConfig::deserialize)), FabricBlockSettings.of(Material.PLANT).sounds(BlockSoundGroup.GRASS).ticksRandomly());
+	public static Block APPLE_PLANT = new ApplePlantBlock(Block.Properties.create(Material.PLANTS), Items.APPLE).setRegistryName(Main.RegistryEvents.getPath("apple_plant"));
+	public static Block GAPPLE_PLANT = new ApplePlantBlock(Block.Properties.create(Material.PLANTS), Items.GOLDEN_APPLE).setRegistryName(Main.RegistryEvents.getPath("gapple_plant"));
+	
+	public static Block APPLE_SAPLING = new AppleSaplingBlock(new CustomTree(Feature.NORMAL_TREE.withConfiguration(TreeWorldGen.APPLE_TREE_CONFIG)), Block.Properties.create(Material.PLANTS)).setRegistryName(Main.RegistryEvents.getPath("apple_sapling"));
+	public static Block GAPPLE_SAPLING = new AppleSaplingBlock(new CustomTree(Feature.NORMAL_TREE.withConfiguration(TreeWorldGen.GOLD_APPLE_TREE_CONFIG)), Block.Properties.create(Material.PLANTS)).setRegistryName(Main.RegistryEvents.getPath("gapple_sapling"));
 }
