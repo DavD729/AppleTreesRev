@@ -23,7 +23,7 @@ public class SurfacePlacement implements IPlacementConfig {
 	
 	public static SurfacePlacement deserialize(Dynamic<?> Map) {
 		int s = Map.get("surfacechance").asInt(0);
-	    int g = Map.get("genchance").asInt(0);
-	    return new SurfacePlacement(s, g);
+		int g = Map.get("genchance").asInt(0);
+		return new SurfacePlacement(s, g);
 	}
 }
