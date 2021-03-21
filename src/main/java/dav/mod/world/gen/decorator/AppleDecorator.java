@@ -48,16 +48,16 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 	@Override
 	public void func_225576_a_(IWorld world, Random rand, List<BlockPos> logPositions, List<BlockPos> leavesPositions, Set<BlockPos> Set, MutableBoundingBox blockBox) {
 		int i = !leavesPositions.isEmpty() ? Math.max(leavesPositions.get(0).getY() - 1, logPositions.get(0).getY()) : Math.min(logPositions.get(0).getY() + 1 + rand.nextInt(3), logPositions.get(logPositions.size() - 1).getY());
-        List<BlockPos> list = logPositions.stream().filter((BlockPos) -> {
-        	return BlockPos.getY() == i;
-        }).collect(Collectors.toList());
-        if(!list.isEmpty()) {
-        	BlockPos AppleLayerPos = list.get(rand.nextInt(list.size()));
-        	BlockState AppleType = this.getDrop();
+		List<BlockPos> list = logPositions.stream().filter((BlockPos) -> {
+			return BlockPos.getY() == i;
+		}).collect(Collectors.toList());
+		if(!list.isEmpty()) {
+			BlockPos AppleLayerPos = list.get(rand.nextInt(list.size()));
+			BlockState AppleType = this.getDrop();
 			int cont = 2;
 			this.func_227423_a_(world, AppleLayerPos.add(1, 0, 1), AppleType, Set, blockBox);
 			this.func_227423_a_(world, AppleLayerPos.add(-1, 0, 2), AppleType, Set, blockBox);
-        	for(int xPos = -2; xPos < 3; xPos++) {
+			for(int xPos = -2; xPos < 3; xPos++) {
 				for(int zPos = -2; zPos < 3; zPos++) {
 					if(rand.nextInt(4) == 0 && cont < 8) {
 						if(isAirOrLeaves(world, AppleLayerPos.add(xPos, 0, zPos)) && isLeaves(world, AppleLayerPos.add(xPos, 1, zPos))) {
@@ -67,7 +67,7 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 					}
 				}
 			}	
-        }
+		}
 	}
 	
 	protected BlockState getDrop() {
