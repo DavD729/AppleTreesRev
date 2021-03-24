@@ -25,7 +25,7 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 	protected final boolean isNatural;
 	
 	public AppleDecorator(int drop, boolean isNatural) {
-		super(-1.0F);
+		super(0.0F);
 		this.drop = drop;
 		this.isNatural = isNatural;
 	}
@@ -55,13 +55,13 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 			BlockPos AppleLayerPos = list.get(rand.nextInt(list.size()));
 			BlockState AppleType = this.getDrop();
 			int cont = 2;
-			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(1, 0, 1), AppleType, Set, Box);
-			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(-1, 0, 2), AppleType, Set, Box);
+			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(1, 0, 1), this.getNaturalAge(AppleType, rand), Set, Box);
+			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(-1, 0, 2), this.getNaturalAge(AppleType, rand), Set, Box);
 			for(int xPos = -2; xPos < 3; xPos++) {
 				for(int zPos = -2; zPos < 3; zPos++) {
 					if(rand.nextInt(4) == 0 && cont < 8) {
 						if(isAirOrLeaves(world, AppleLayerPos.add(xPos, 0, zPos)) && isLeaves(world, AppleLayerPos.add(xPos, 1, zPos))) {
-							this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(xPos, 0, zPos), AppleType, Set, Box);
+							this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(xPos, 0, zPos), this.getNaturalAge(AppleType, rand), Set, Box);
 							cont++;
 						}
 					}
@@ -70,14 +70,18 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 		}
 	}
 	
-	protected BlockState getDrop() {
-		BlockState State;
-		switch(this.drop) {
-		case 1: State = BlockInit.GAPPLE_PLANT.getDefaultState();
-				break;
-		default: State = BlockInit.APPLE_PLANT.getDefaultState();
+	private BlockState getNaturalAge(BlockState State, Random Rand) {
+		if(!this.isNatural) {
+			return State;
 		}
-		return this.isNatural ? State.with(ApplePlantBlock.AGE, Integer.valueOf(3)) : State;
+		return State.with(ApplePlantBlock.AGE, Integer.valueOf(2 + Rand.nextInt(3)));
+	}
+	
+	protected BlockState getDrop() {
+		switch(this.drop) {
+		case 1: return BlockInit.GAPPLE_PLANT.getDefaultState();
+		default: return BlockInit.APPLE_PLANT.getDefaultState();
+		}
 	}
 	
 	protected static boolean isAirOrLeaves(IWorld world, BlockPos pos) {
