@@ -18,7 +18,7 @@ public class NaturalAppleTreeGen extends WorldGenAbstractTree{
 	
 	private static final IBlockState LOG = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
    	private static final IBlockState LEAF = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
-   	private static final IBlockState APPLE = BlockInit.APPLE_PLANT.getDefaultState().withProperty(BlockApplePlant.AGE, Integer.valueOf(3));
+   	private static final IBlockState APPLE = BlockInit.APPLE_PLANT.getDefaultState();
 	
 	public NaturalAppleTreeGen() {
 		super(false);
@@ -88,13 +88,13 @@ public class NaturalAppleTreeGen extends WorldGenAbstractTree{
 					
 					int cont = 2;
             				int appleLayer = i - 4;
-            				this.setBlockAndNotifyAdequately(worldIn, position.add(1, appleLayer, 1), APPLE);
-            				this.setBlockAndNotifyAdequately(worldIn, position.add(-1, appleLayer, 2), APPLE);
+            				this.setBlockAndNotifyAdequately(worldIn, position.add(1, appleLayer, 1), this.getNatAge(APPLE, rand));
+            				this.setBlockAndNotifyAdequately(worldIn, position.add(-1, appleLayer, 2), this.getNatAge(APPLE, rand));
             				for(int xPos = -2; xPos < 3; xPos++) {
     					for(int zPos = -2; zPos < 3; zPos++) {
     						if(rand.nextInt(4) == 0 && cont < 8) {
     							if(isAirOrLeaves(worldIn, position.add(xPos, appleLayer, zPos)) && isLeaves(worldIn, position.add(xPos, appleLayer + 1, zPos))) {
-    								this.setBlockAndNotifyAdequately(worldIn, position.add(xPos, appleLayer, zPos), APPLE);
+    								this.setBlockAndNotifyAdequately(worldIn, position.add(xPos, appleLayer, zPos), this.getNatAge(APPLE, rand));
     								cont++;
     							}
     						}
@@ -109,6 +109,10 @@ public class NaturalAppleTreeGen extends WorldGenAbstractTree{
 		} else {
 			return false;
 		}
+	}
+	
+	private static IBlockState getNatAge(IBlockState State, Random Rand) {
+		return State.withProperty(BlockApplePlant.AGE, Integer.valueOf(2 + Rand.nextInt(3)))
 	}
 	
 	private static boolean isAirOrLeaves(World worldIn, BlockPos pos) {
