@@ -17,7 +17,7 @@ public class NaturalAppleTreeFeature extends AbstractTreeFeature<NoFeatureConfig
 	
 	private static final IBlockState LOG = Blocks.OAK_LOG.getDefaultState();
 	private static final IBlockState LEAF = Blocks.OAK_LEAVES.getDefaultState();
-	private static final IBlockState APPLE = BlockList.apple_plant.getDefaultState().with(AppleBlockPlant.AGE, Integer.valueOf(3));
+	private static final IBlockState APPLE = BlockList.apple_plant.getDefaultState();
 	
 	public NaturalAppleTreeFeature() {
 		super(false);
@@ -82,13 +82,13 @@ public class NaturalAppleTreeFeature extends AbstractTreeFeature<NoFeatureConfig
 					
 					int cont = 2;
             				int appleLayer = i - 4;
-            				this.setBlockState(worldIn, pos.add(1, appleLayer, 1), APPLE);
-            				this.setBlockState(worldIn, pos.add(-1, appleLayer, 2), APPLE);
+            				this.setBlockState(worldIn, pos.add(1, appleLayer, 1), this.getNatAge(APPLE, rand));
+            				this.setBlockState(worldIn, pos.add(-1, appleLayer, 2), this.getNatAge(APPLE, rand));
             				for(int xPos = -2; xPos < 3; xPos++) {
     						for(int zPos = -2; zPos < 3; zPos++) {
     							if(rand.nextInt(4) == 0 && cont < 8) {
     								if(isAirOrLeaves(worldIn, pos.add(xPos, appleLayer, zPos)) && isLeaves(worldIn, pos.add(xPos, appleLayer + 1, zPos))) {
-    									this.setBlockState(worldIn, pos.add(xPos, appleLayer, zPos), APPLE);
+    									this.setBlockState(worldIn, pos.add(xPos, appleLayer, zPos), this.getNatAge(APPLE, rand));
     									cont++;
     								}
     							}
@@ -103,6 +103,10 @@ public class NaturalAppleTreeFeature extends AbstractTreeFeature<NoFeatureConfig
 		} else {
 			return false;
 		}
+	}
+	
+	private IBlockState getNatAge(IBlockState State, Random Rand){
+		return State.with(AppleBlockPlant.AGE, Integer.valueOf(2 + Rand.nextInt(3)));
 	}
 	
 	private static boolean isAirOrLeaves(IWorld worldIn, BlockPos pos) {
