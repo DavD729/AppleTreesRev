@@ -32,6 +32,6 @@ v1.1
     *- Only Apple Trees will spawn on Forests & Plains Biomes*
 
 v1.2
-- Natural Trees will spawn with Apple Plants with an Age Of 3
+- Natural Apple Trees will Spawn with Apple Plants with an Age between 2-5
     
 > This Repository is for Anyone who wants to Add new Features or Change it for Good.
