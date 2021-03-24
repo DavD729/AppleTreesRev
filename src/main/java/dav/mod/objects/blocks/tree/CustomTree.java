@@ -2,20 +2,20 @@ package dav.mod.objects.blocks.tree;
 
 import java.util.Random;
 
-import net.minecraft.block.sapling.SaplingGenerator;
-import net.minecraft.world.gen.feature.BranchedTreeFeatureConfig;
+import net.minecraft.block.trees.Tree;
+import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 
-public class CustomTree extends SaplingGenerator{
+public class CustomTree extends Tree{
 	
-	private ConfiguredFeature<BranchedTreeFeatureConfig, ?> Tree;
+	private ConfiguredFeature<BaseTreeFeatureConfig, ?> Tree;
 	
-	public CustomTree(ConfiguredFeature<BranchedTreeFeatureConfig, ?> Tree) {
-		this.Tree = Tree;
+	public CustomTree(ConfiguredFeature<BaseTreeFeatureConfig, ?> Type) {
+		this.Tree = Type;
 	}
 	
 	@Override
-	protected ConfiguredFeature<BranchedTreeFeatureConfig, ?> createTreeFeature(Random random, boolean bl) {
+	protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean largeHive) {
 		return this.Tree;
 	}
 }
