@@ -33,5 +33,5 @@ v1.0
 
 v1.1
 - Changed Apple Decoration on Trees
-- Natural Trees will spawn with Apple Plants with an Age Of 3
+- Natural Apple Trees will Spawn with Apple Plants with an Age between 2-5
     
