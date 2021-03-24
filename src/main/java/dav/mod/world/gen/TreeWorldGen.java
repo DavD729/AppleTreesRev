@@ -54,7 +54,7 @@ public class TreeWorldGen {
 		
 		switch (event.getCategory()) {
 
-	    case PLAINS:	if(event.getName().toString().contains(Biomes.PLAINS.getLocation().toString())) {
+		case PLAINS:		if(event.getName().toString().contains(Biomes.PLAINS.getLocation().toString())) {
 	    					registerTo(generation, NATURAL.withPlacement(PLAINS_PLACEMENT));
 	    					Main.LOGGER.info("PLAINS BIOME Feature Subscribed");
 	    				} else if(event.getName().toString().contains(Biomes.SUNFLOWER_PLAINS.getLocation().toString())) {
@@ -63,7 +63,7 @@ public class TreeWorldGen {
 	    				}
 	    				break;
 	    			 
-	    case FOREST:	if(event.getName().toString().contains(Biomes.FOREST.getLocation().toString())) {
+		case FOREST:		if(event.getName().toString().contains(Biomes.FOREST.getLocation().toString())) {
 	    					registerTo(generation, NATURAL.withPlacement(FOREST_PLACEMENT));
 	    					Main.LOGGER.info("FOREST BIOME Feature Subscribed");
 	    				} else if(event.getName().toString().contains(Biomes.DARK_FOREST.getLocation().toString())) {
@@ -75,10 +75,10 @@ public class TreeWorldGen {
 	    				}
 	    				break;
 		 			 
-	    case EXTREME_HILLS:		if(event.getName().toString().contains(Biomes.WOODED_MOUNTAINS.getLocation().toString())) {
-	    							registerTo(generation, NATURAL.withPlacement(MOUNTAIN_PLACEMENT));
-	    							Main.LOGGER.info("WOODED MOUNTAINS BIOME Feature Subscribed");
-	    						}
+		case EXTREME_HILLS:	if(event.getName().toString().contains(Biomes.WOODED_MOUNTAINS.getLocation().toString())) {
+						registerTo(generation, NATURAL.withPlacement(MOUNTAIN_PLACEMENT));
+						Main.LOGGER.info("WOODED MOUNTAINS BIOME Feature Subscribed");
+	    				}
 		default: 	break;
 		}
 	}
