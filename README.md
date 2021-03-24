@@ -27,11 +27,11 @@ v1.0
     *- Ravagers can Destroy Apple Plants (Apply Drops)*
 - Trees now has 5-7 logs of height
 - Trees can Spawn with Beehives
+
+v1.1
+- Changed Apple Decoration on Trees
 - Added Natural World Generation
 
     *- Only Apple Trees will spawn on Forests & Plains Biomes*
 
-v1.1
-- Changed Apple Decoration on Trees
-- Natural Apple Trees will Spawn with Apple Plants with an Age between 2-5
-    
+    *- Natural Apple Trees will Spawn with Apple Plants with an Age between 2-5*
