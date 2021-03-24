@@ -46,6 +46,7 @@ v1.4
 - Natural Apple Trees will Spawn with Apple Plants with an Age of 3
 
 v1.5
+- Natural Apple Trees will Spawn with Apple Plants with an Age between 2-5
 - Changed Config File:
 
     *- Removed - ~~[Enable/Disable] Any Sapling for Apple Sapling Recipe~~*
