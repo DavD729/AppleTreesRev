@@ -45,16 +45,16 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 	@Override
 	public void generate(StructureWorldAccess world, Random Rand, List<BlockPos> logPositions, List<BlockPos> leavesPositions, Set<BlockPos> placedStates, BlockBox box) {
 		int i = !leavesPositions.isEmpty() ? Math.max(((BlockPos)leavesPositions.get(0)).getY() - 1, ((BlockPos)logPositions.get(0)).getY()) : Math.min(((BlockPos)logPositions.get(0)).getY() + 1 + Rand.nextInt(3), ((BlockPos)logPositions.get(logPositions.size() - 1)).getY());
-        List<BlockPos> list = (List<BlockPos>)logPositions.stream().filter((pos) -> {
-           return pos.getY() == i;
-        }).collect(Collectors.toList());
-        if (!list.isEmpty()) {
-        	BlockPos AppleLayerPos = list.get(Rand.nextInt(list.size()));
-        	BlockState AppleType = this.getDropType();
-        	int cont = 2;
-        	this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(1, 0, 1), this.getNaturalAge(AppleType, Rand), placedStates, box);
-        	this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(-1, 0, 2), this.getNaturalAge(AppleType, Rand), placedStates, box);
-        	for(int xPos = -2; xPos < 3; xPos++) {
+		List<BlockPos> list = (List<BlockPos>)logPositions.stream().filter((pos) -> {
+			return pos.getY() == i;
+		}).collect(Collectors.toList());
+		if (!list.isEmpty()) {
+			BlockPos AppleLayerPos = list.get(Rand.nextInt(list.size()));
+			BlockState AppleType = this.getDropType();
+			int cont = 2;
+			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(1, 0, 1), this.getNaturalAge(AppleType, Rand), placedStates, box);
+			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(-1, 0, 2), this.getNaturalAge(AppleType, Rand), placedStates, box);
+			for(int xPos = -2; xPos < 3; xPos++) {
 				for(int zPos = -2; zPos < 3; zPos++) {
 					if(Rand.nextInt(4) == 0 && cont < 8) {
 						if(isAirOrLeaves(world, AppleLayerPos.add(xPos, 0, zPos)) && isLeaves(world, AppleLayerPos.add(xPos, 1, zPos))) {
@@ -64,7 +64,7 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 					}
 				}
 			}
-        }
+		}
 	}
 	
 	private BlockState getNaturalAge(BlockState State, Random Rand) {
