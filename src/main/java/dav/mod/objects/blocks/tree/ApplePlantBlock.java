@@ -2,74 +2,69 @@ package dav.mod.objects.blocks.tree;
 
 import java.util.Random;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.Fertilizable;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.RavagerEntity;
+import net.minecraft.entity.mob.RavagerEntity;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
-public class ApplePlantBlock extends Block implements IGrowable{
+public class ApplePlantBlock extends Block implements Fertilizable{
 	
-	public static final IntegerProperty AGE = BlockStateProperties.AGE_0_7;
+	private int Type;
+	public static final IntProperty AGE = Properties.AGE_7;
 	private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
-		Block.makeCuboidShape(10.0D, 16.0D, 10.0D, 6.0D, 13.0D, 6.0D), //Age 0
-		Block.makeCuboidShape(10.0D, 16.0D, 10.0D, 6.0D, 11.0D, 6.0D), //Age 1
-		Block.makeCuboidShape(11.0D, 16.0D, 11.0D, 4.0D, 9.5D, 4.0D),  //Age 2
-		Block.makeCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 6.0D, 4.0D),  //Age 3
-		Block.makeCuboidShape(12.0D, 16.0D, 12.0D, 3.0D, 4.0D, 3.0D),  //Age 4
-		Block.makeCuboidShape(14.0D, 16.0D, 14.0D, 2.0D, 3.0D, 2.0D),  //Age 5
-		Block.makeCuboidShape(15.0D, 16.0D, 15.0D, 1.0D, 1.0D, 1.0D),  //Age 6
-		Block.makeCuboidShape(15.0D, 16.0D, 15.0D, 1.0D, 1.0D, 1.0D)   //Age 7
+		Block.createCuboidShape(10.0D, 16.0D, 10.0D, 6.0D, 13.0D, 6.0D), //Age 0
+		Block.createCuboidShape(10.0D, 16.0D, 10.0D, 6.0D, 11.0D, 6.0D), //Age 1
+		Block.createCuboidShape(11.0D, 16.0D, 11.0D, 4.0D, 9.5D, 4.0D),  //Age 2
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 6.0D, 4.0D),  //Age 3
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 3.0D, 4.0D, 3.0D),  //Age 4
+		Block.createCuboidShape(14.0D, 16.0D, 14.0D, 2.0D, 3.0D, 2.0D),  //Age 5
+		Block.createCuboidShape(15.0D, 16.0D, 15.0D, 1.0D, 1.0D, 1.0D),  //Age 6
+		Block.createCuboidShape(15.0D, 16.0D, 15.0D, 1.0D, 1.0D, 1.0D)   //Age 7
 	};
-	private int type;
 	
-	public ApplePlantBlock(Properties properties, int type) {
-		super(properties.doesNotBlockMovement().hardnessAndResistance(0.4F, 0.0F).tickRandomly().sound(SoundType.PLANT).notSolid());
-		this.setDefaultState(this.stateContainer.getBaseState().with(this.getAgeProperty(), Integer.valueOf(0)));
-		this.type = type;
+	public ApplePlantBlock(Settings settings, int Type) {
+		super(settings.noCollision().strength(0.4F, 0.0F));
+		this.Type = Type;
 	}
 	
 	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockState upState = worldIn.getBlockState(pos.up());
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
+		BlockState upState = world.getBlockState(pos.up());
 		if(!upState.isIn(BlockTags.LEAVES)) {
-			worldIn.destroyBlock(pos, true);
+			world.breakBlock(pos, true);
 		}
 	}
 	
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+	public boolean isTranslucent(BlockState state, BlockView view, BlockPos pos) {
 		return true;
 	}
 	
 	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return SHAPE_BY_AGE[state.get(this.getAgeProperty())];
-	}
-	
-	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return SHAPE_BY_AGE[state.get(this.getAgeProperty())];
+	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
+		return SHAPE_BY_AGE[(Integer)state.get(this.getAgeProperty())];
 	}
 
-	public IntegerProperty getAgeProperty() {
+	public IntProperty getAgeProperty() {
 		return AGE;
 	}
 
@@ -78,57 +73,56 @@ public class ApplePlantBlock extends Block implements IGrowable{
 	}
 
 	protected int getAge(BlockState state) {
-		return state.get(this.getAgeProperty());
+		return (Integer)state.get(this.getAgeProperty());
 	}
 
 	public BlockState withAge(int age) {
-		return this.getDefaultState().with(this.getAgeProperty(), Integer.valueOf(age));
+		return (BlockState)this.getDefaultState().with(this.getAgeProperty(), age);
 	}
 
-	public boolean isMaxAge(BlockState state) {
-		return state.get(this.getAgeProperty()) >= this.getMaxAge();
+	public boolean isMature(BlockState state) {
+		return (Integer)state.get(this.getAgeProperty()) >= this.getMaxAge();
 	}
 	
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		if (!worldIn.isAreaLoaded(pos, 1)) return;
-		BlockState upState = worldIn.getBlockState(pos.up());
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		BlockState upState = world.getBlockState(pos.up());
 		if(upState.isIn(BlockTags.LEAVES)) {
-			if (worldIn.getLightSubtracted(pos, 0) >= 9) {
+			if (world.getLightLevel(pos, 0) >= 9) {
 				int i = this.getAge(state);
 				if (i < this.getMaxAge()) {
-					float f = getGrowthChance(this, worldIn, pos);
-					if (rand.nextInt((int)(20.0F / f) + 1) == 0) {
-						worldIn.setBlockState(pos, this.withAge(i + 1), 2);
+					float f = getAvailableMoisture(this, world, pos);
+					if (random.nextInt((int)(20.0F / f) + 1) == 0) {
+						world.setBlockState(pos, this.withAge(i + 1), 2);
 					}
 				}
 			}
 		} else {
-			worldIn.destroyBlock(pos, true);
+			world.breakBlock(pos, true);
 		}
 	}
-	
-	public void grow(World worldIn, BlockPos pos, BlockState state) {
-		int i = this.getAge(state) + this.getBonemealAgeIncrease(worldIn);
+
+	public void applyGrowth(World world, BlockPos pos, BlockState state) {
+		int i = this.getAge(state) + this.getGrowthAmount(world);
 		int j = this.getMaxAge();
 		if (i > j) {
 			i = j;
 		}
-		worldIn.setBlockState(pos, this.withAge(i), 2);
+		world.setBlockState(pos, this.withAge(i), 2);
 	}
 
-	protected int getBonemealAgeIncrease(World worldIn) {
-		return MathHelper.nextInt(worldIn.rand, 2, 5);
+	protected int getGrowthAmount(World world) {
+		return MathHelper.nextInt(world.random, 2, 5);
 	}
 
-	protected static float getGrowthChance(Block blockIn, IBlockReader worldIn, BlockPos pos) {
+	protected static float getAvailableMoisture(Block block, BlockView world, BlockPos pos) {
 		float f = 2.0F;
         BlockPos blockpos = pos;
         BlockState air = Blocks.AIR.getDefaultState();
         for (int i = -1; i <= 1; ++i) {
             for (int j = -1; j <= 1; ++j) {
                 float f1 = 0.0F;
-                BlockState iblockstate = worldIn.getBlockState(blockpos.add(i, 0, j));
+                BlockState iblockstate = world.getBlockState(blockpos.add(i, 0, j));
                 if (iblockstate.getBlock().getDefaultState() == air) f1 = 2.0F;
                 if (i != 0 || j != 0) f1 /= 2.0F;
                 f += f1;
@@ -138,13 +132,13 @@ public class ApplePlantBlock extends Block implements IGrowable{
   		BlockPos blockposS = pos.south();
   		BlockPos blockposW = pos.west();
   		BlockPos blockposE = pos.east();
-  		boolean flag = !isLeavesOrAir(worldIn, blockposN) || !isLeavesOrAir(worldIn, blockposS);
-        boolean flag1 = !isLeavesOrAir(worldIn, blockposE) || !isLeavesOrAir(worldIn, blockposW);
+  		boolean flag = !isLeavesOrAir(world, blockposN) || !isLeavesOrAir(world, blockposS);
+        boolean flag1 = !isLeavesOrAir(world, blockposE) || !isLeavesOrAir(world, blockposW);
 
         if (flag && flag1) {
             f /= 2.0F;
         } else {
-            boolean flag2 = !isLeavesOrAir(worldIn, blockposW.north()) || !isLeavesOrAir(worldIn, blockposE.north()) || !isLeavesOrAir(worldIn, blockposN.south()) || !isLeavesOrAir(worldIn, blockposW.south());
+            boolean flag2 = !isLeavesOrAir(world, blockposW.north()) || !isLeavesOrAir(world, blockposE.north()) || !isLeavesOrAir(world, blockposN.south()) || !isLeavesOrAir(world, blockposW.south());
             if (flag2) {
                 f /= 2.0F;
             }
@@ -152,52 +146,49 @@ public class ApplePlantBlock extends Block implements IGrowable{
         return f;
   	}
 	
-	@SuppressWarnings("deprecation")
-	private static boolean isLeavesOrAir(IBlockReader worldIn, BlockPos pos) {
-		return worldIn.getBlockState(pos).isAir(worldIn, pos) || worldIn.getBlockState(pos).isIn(BlockTags.LEAVES);
+	private static boolean isLeavesOrAir(BlockView worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos).isAir() || worldIn.getBlockState(pos).isIn(BlockTags.LEAVES);
 	}
 	
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return worldIn.getLightSubtracted(pos, 0) >= 8 || worldIn.canBlockSeeSky(pos);
-	}
-	
-	@Override
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-		if (entityIn instanceof RavagerEntity && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(worldIn, entityIn)) {
-			worldIn.destroyBlock(pos, true);
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+		if (entity instanceof RavagerEntity && world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+			world.breakBlock(pos, true);
 		}
+		super.onEntityCollision(state, world, pos, entity);
 	}
 
-	protected IItemProvider getSeedsItem() {
-		switch(type) {
+	@Environment(EnvType.CLIENT)
+	protected ItemConvertible getSeedsItem() {
+		switch(this.Type) {
 		case 1: return Items.GOLDEN_APPLE;
 		default: return Items.APPLE;
 		}
 	}
-	
+
+	@Environment(EnvType.CLIENT)
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
 		return new ItemStack(this.getSeedsItem());
 	}
 	
 	@Override
-	public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
-		return !this.isMaxAge(state);
+	public boolean isFertilizable(BlockView world, BlockPos pos, BlockState state, boolean isClient) {
+		return !this.isMature(state);
 	}
 	
 	@Override
-	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
+	public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
 		return true;
 	}
 	
 	@Override
-	public void grow(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
-		this.grow(worldIn, pos, state);
+	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
+		this.applyGrowth(world, pos, state);
 	}
 	
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(AGE);
 	}
 }

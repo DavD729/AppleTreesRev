@@ -1,90 +1,49 @@
 package dav.mod;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import dav.mod.config.RecipesConfig;
 import dav.mod.init.BlockInit;
-import dav.mod.init.ItemInit;
 import dav.mod.world.gen.TreeWorldGen;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
-@Mod(Main.MODID)
-public class Main {
-    public static final String MODID = "appletreesrev";
-    public static final Logger LOGGER = LogManager.getLogger();
-
-    public Main() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-        MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    private void setup(final FMLCommonSetupEvent event) {
-    	MinecraftForge.EVENT_BUS.register(TreeWorldGen.class);
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
-    }
-
-    private void enqueueIMC(final InterModEnqueueEvent event) {
-    }
-
-    private void processIMC(final InterModProcessEvent event) {
-    }
-    
-    @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
-    }
-    
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-    	
-    	@SubscribeEvent
-        public static void onItemsRegistry(final RegistryEvent.Register<Item> itemRegistryEvent) {
-    		itemRegistryEvent.getRegistry().registerAll(
-    			ItemInit.APPLE_SAPLING,
-    			ItemInit.GAPPLE_SAPLING
-    		);
-    		LOGGER.info("Items Registered");
-        }
-    	
-        @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-        	blockRegistryEvent.getRegistry().registerAll(
-        		BlockInit.APPLE_PLANT,
-        		BlockInit.GAPPLE_PLANT,
-        		BlockInit.APPLE_SAPLING,
-        		BlockInit.GAPPLE_SAPLING
-        	);
-        	if(FMLEnvironment.dist == Dist.CLIENT) {
-        		RenderTypeLookup.setRenderLayer(BlockInit.APPLE_PLANT, RenderType.getCutout());
-        		RenderTypeLookup.setRenderLayer(BlockInit.GAPPLE_PLANT, RenderType.getCutout());
-        		RenderTypeLookup.setRenderLayer(BlockInit.APPLE_SAPLING, RenderType.getCutout());
-        		RenderTypeLookup.setRenderLayer(BlockInit.GAPPLE_SAPLING, RenderType.getCutout());
-        	}
-        	LOGGER.info("Blocks Registered");
-        }
-        
-        public static ResourceLocation getPath(String path) {
-        	return new ResourceLocation(Main.MODID, path);
-        }
-    }
+public class Main implements ModInitializer {
+	
+	public static final String MODID = "appletreesrev";
+	
+	@Override
+	public void onInitialize() {
+		registerBlocks();
+		registerItems();
+		registerFeatures();
+		RecipesConfig.recipeManager();
+		System.out.println("AppleTreesRev Mod Initialized");
+	}
+	
+	public static void registerItems() {
+		Registry.register(Registry.ITEM, getPath("apple_sapling"), new BlockItem(BlockInit.APPLE_SAPLING, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
+		Registry.register(Registry.ITEM, getPath("gapple_sapling"), new BlockItem(BlockInit.GAPPLE_SAPLING, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
+		System.out.println(MODID + ":Items Registered");
+	}
+	
+	public static void registerFeatures() {
+		TreeWorldGen.registerFeatures();
+		System.out.println(MODID + ":Features Registered");
+	}
+	
+	public static void registerBlocks() {
+		Registry.register(Registry.BLOCK, getPath("apple_plant"), BlockInit.APPLE_PLANT);
+		Registry.register(Registry.BLOCK, getPath("gapple_plant"), BlockInit.GAPPLE_PLANT);
+		Registry.register(Registry.BLOCK, getPath("apple_sapling"), BlockInit.APPLE_SAPLING);
+		Registry.register(Registry.BLOCK, getPath("gapple_sapling"), BlockInit.GAPPLE_SAPLING);
+		BlockInit.renderCutoutBlocks();
+		System.out.println(MODID + ":Blocks Registered");
+	}
+	
+	public static Identifier getPath(String path) {
+		return new Identifier(MODID, path);
+	}
 }

@@ -4,86 +4,81 @@ import com.google.common.collect.ImmutableList;
 
 import dav.mod.Main;
 import dav.mod.world.gen.decorator.AppleDecorator;
-import dav.mod.world.gen.placement.SurfacePlacement;
-import dav.mod.world.gen.placement.TreeSurface;
+import dav.mod.world.gen.decorator.SurfaceDecorator;
+import dav.mod.world.gen.decorator.TreeDecorator;
+import dav.mod.world.gen.feature.GenericNaturalAppleTree;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
+import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.UniformIntDistribution;
+import net.minecraft.world.gen.decorator.ConfiguredDecorator;
+import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.ConfiguredFeatures;
+import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.FeatureSpread;
-import net.minecraft.world.gen.feature.Features;
-import net.minecraft.world.gen.feature.TwoLayerFeature;
-import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
-import net.minecraft.world.gen.placement.ConfiguredPlacement;
-import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
-import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
+import net.minecraft.world.gen.foliage.BlobFoliagePlacer;
+import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.trunk.StraightTrunkPlacer;
 
+@SuppressWarnings("deprecation")
 public class TreeWorldGen {
 	
 	public static final BlockState OAK_LOG = Blocks.OAK_LOG.getDefaultState();
 	public static final BlockState OAK_LEAVES = Blocks.OAK_LEAVES.getDefaultState();
 	
-	public static final BaseTreeFeatureConfig APPLE_CONFIG = new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), 
-		new SimpleBlockStateProvider(OAK_LEAVES), new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3), 
-		new StraightTrunkPlacer(5, 2, 0), new TwoLayerFeature(1, 0, 1)).setIgnoreVines().build();
+	public static final Decorator<SurfaceDecorator> TREE_DECORATOR = Registry.register(Registry.DECORATOR, Main.getPath("tree_decorator"), new TreeDecorator(SurfaceDecorator.CODEC));
 	
-	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> APPLE = new ConfiguredFeature<BaseTreeFeatureConfig, Feature<BaseTreeFeatureConfig>>(Feature.TREE, 
-		APPLE_CONFIG.func_236685_a_(ImmutableList.of(Features.Placements.BEES_005_PLACEMENT, new AppleDecorator(0, false))));
-	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> GAPPLE = new ConfiguredFeature<BaseTreeFeatureConfig, Feature<BaseTreeFeatureConfig>>(Feature.TREE,
-		APPLE_CONFIG.func_236685_a_(ImmutableList.of(Features.Placements.BEES_005_PLACEMENT, new AppleDecorator(1, false))));
-	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> NATURAL = new ConfiguredFeature<BaseTreeFeatureConfig, Feature<BaseTreeFeatureConfig>>(Feature.TREE,
-		APPLE_CONFIG.func_236685_a_(ImmutableList.of(Features.Placements.BEES_005_PLACEMENT, new AppleDecorator(0, true))));
+	public static final AppleDecorator APPLE_A = new AppleDecorator(0, false);
+	public static final AppleDecorator APPLE_B = new AppleDecorator(1, false);
 	
-	public static final ConfiguredPlacement<SurfacePlacement> PLAINS_PLACEMENT = new ConfiguredPlacement<SurfacePlacement>(new TreeSurface(SurfacePlacement.CODEC), new SurfacePlacement(40));
-	public static final ConfiguredPlacement<SurfacePlacement> SUN_PLAINS_PLACEMENT = new ConfiguredPlacement<SurfacePlacement>(new TreeSurface(SurfacePlacement.CODEC), new SurfacePlacement(35));
-	public static final ConfiguredPlacement<SurfacePlacement> FOREST_PLACEMENT = new ConfiguredPlacement<SurfacePlacement>(new TreeSurface(SurfacePlacement.CODEC), new SurfacePlacement(25));
-	public static final ConfiguredPlacement<SurfacePlacement> DARK_FOREST_PLACEMENT = new ConfiguredPlacement<SurfacePlacement>(new TreeSurface(SurfacePlacement.CODEC), new SurfacePlacement(20));
-	public static final ConfiguredPlacement<SurfacePlacement> FLOWER_FOREST_PLACEMENT = new ConfiguredPlacement<SurfacePlacement>(new TreeSurface(SurfacePlacement.CODEC), new SurfacePlacement(8));
-	public static final ConfiguredPlacement<SurfacePlacement> MOUNTAIN_PLACEMENT = new ConfiguredPlacement<SurfacePlacement>(new TreeSurface(SurfacePlacement.CODEC), new SurfacePlacement(60));
+	public static final TreeFeatureConfig BASE_TREE = new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES),
+		new BlobFoliagePlacer(UniformIntDistribution.of(2), UniformIntDistribution.of(0), 3), new StraightTrunkPlacer(5, 2, 0), new TwoLayersFeatureSize(1, 0, 1))
+		.decorators(ImmutableList.of(ConfiguredFeatures.Decorators.MORE_BEEHIVES_TREES)).ignoreVines().build();
 	
-	@SubscribeEvent(priority = EventPriority.HIGH)
-	public static void setupTreeGeneration(final BiomeLoadingEvent event) {
-		BiomeGenerationSettingsBuilder generation = event.getGeneration();
+	public static final ConfiguredFeature<TreeFeatureConfig, ?> APPLE_TREE = new ConfiguredFeature<TreeFeatureConfig, Feature<TreeFeatureConfig>>(Feature.TREE, BASE_TREE
+		.setTreeDecorators(ImmutableList.of(APPLE_A)));
+	
+	public static final ConfiguredFeature<TreeFeatureConfig, ?> GAPPLE_TREE = new ConfiguredFeature<TreeFeatureConfig, Feature<TreeFeatureConfig>>(Feature.TREE, BASE_TREE
+		.setTreeDecorators(ImmutableList.of(APPLE_B)));
+	
+	private static final Feature<DefaultFeatureConfig> NAT_TREE = new GenericNaturalAppleTree(DefaultFeatureConfig.CODEC, BASE_TREE);
+	
+	public static final ConfiguredDecorator<SurfaceDecorator> PLAINS_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(40));
+	public static final ConfiguredDecorator<SurfaceDecorator> FOREST_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(25));
+	public static final ConfiguredDecorator<SurfaceDecorator> FLOWER_FOREST_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(8));
+	public static final ConfiguredDecorator<SurfaceDecorator> MOUNTAIN_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(60));
+	
+	public static final ConfiguredFeature<?, ?> PLAINS_APPLE = NAT_TREE.configure(FeatureConfig.DEFAULT).decorate(PLAINS_DECORATE);
+	public static final ConfiguredFeature<?, ?> FOREST_APPLE = NAT_TREE.configure(FeatureConfig.DEFAULT).decorate(FOREST_DECORATE);
+	public static final ConfiguredFeature<?, ?> FLOWER_FOREST_APPLE = NAT_TREE.configure(FeatureConfig.DEFAULT).decorate(FLOWER_FOREST_DECORATE);
+	public static final ConfiguredFeature<?, ?> MOUNTAIN_APPLE = NAT_TREE.configure(FeatureConfig.DEFAULT).decorate(MOUNTAIN_DECORATE);
+	
+	public static void registerFeatures() {	
+		Registry.register(Registry.FEATURE, Main.getPath("generic_apple_tree"), NAT_TREE);
 		
-		switch (event.getCategory()) {
-
-	    case PLAINS:	if(event.getName().toString().contains(Biomes.PLAINS.getLocation().toString())) {
-	    					registerTo(generation, NATURAL.withPlacement(PLAINS_PLACEMENT));
-	    					Main.LOGGER.info("PLAINS BIOME Feature Subscribed");
-	    				} else if(event.getName().toString().contains(Biomes.SUNFLOWER_PLAINS.getLocation().toString())) {
-	    					registerTo(generation, NATURAL.withPlacement(SUN_PLAINS_PLACEMENT));
-	    					Main.LOGGER.info("SUNFLOWER_PLAINS BIOME Feature Subscribed");
-	    				}
-	    				break;
-	    			 
-	    case FOREST:	if(event.getName().toString().contains(Biomes.FOREST.getLocation().toString())) {
-	    					registerTo(generation, NATURAL.withPlacement(FOREST_PLACEMENT));
-	    					Main.LOGGER.info("FOREST BIOME Feature Subscribed");
-	    				} else if(event.getName().toString().contains(Biomes.DARK_FOREST.getLocation().toString())) {
-	    					registerTo(generation, NATURAL.withPlacement(DARK_FOREST_PLACEMENT));
-	    					Main.LOGGER.info("DARK FOREST BIOME Feature Subscribed");
-	    				} else if(event.getName().toString().contains(Biomes.FLOWER_FOREST.getLocation().toString())) {
-	    					registerTo(generation, NATURAL.withPlacement(FLOWER_FOREST_PLACEMENT));
-	    					Main.LOGGER.info("FLOWER FOREST BIOME Feature Subscribed");
-	    				}
-	    				break;
-		 			 
-	    case EXTREME_HILLS:		if(event.getName().toString().contains(Biomes.WOODED_MOUNTAINS.getLocation().toString())) {
-	    							registerTo(generation, NATURAL.withPlacement(MOUNTAIN_PLACEMENT));
-	    							Main.LOGGER.info("WOODED MOUNTAINS BIOME Feature Subscribed");
-	    						}
-		default: 	break;
-		}
-	}
-	
-	private static void registerTo(BiomeGenerationSettingsBuilder builder, ConfiguredFeature<?, ?> feature) { 
-		builder.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, feature);
+		RegistryKey<ConfiguredFeature<?, ?>> plainsApple = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, Main.getPath("plains_apple"));
+		RegistryKey<ConfiguredFeature<?, ?>> forestApple = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, Main.getPath("forest_apple"));
+		RegistryKey<ConfiguredFeature<?, ?>> flowerForestApple = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, Main.getPath("flowerforest_apple"));
+		RegistryKey<ConfiguredFeature<?, ?>> mountainApple = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, Main.getPath("mountain_apple"));
+		
+		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, plainsApple.getValue(), PLAINS_APPLE);
+		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, forestApple.getValue(), FOREST_APPLE);
+		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, flowerForestApple.getValue(), FLOWER_FOREST_APPLE);
+		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, mountainApple.getValue(), MOUNTAIN_APPLE);
+		
+		BiomeModifications.addFeature(BiomeSelectors.includeByKey(BiomeKeys.PLAINS, BiomeKeys.SUNFLOWER_PLAINS), GenerationStep.Feature.VEGETAL_DECORATION, plainsApple);
+		BiomeModifications.addFeature(BiomeSelectors.includeByKey(BiomeKeys.FOREST, BiomeKeys.DARK_FOREST), GenerationStep.Feature.VEGETAL_DECORATION, forestApple);
+		BiomeModifications.addFeature(BiomeSelectors.includeByKey(BiomeKeys.FLOWER_FOREST), GenerationStep.Feature.VEGETAL_DECORATION, flowerForestApple);
+		BiomeModifications.addFeature(BiomeSelectors.includeByKey(BiomeKeys.WOODED_MOUNTAINS), GenerationStep.Feature.VEGETAL_DECORATION, mountainApple);
 	}
 }
