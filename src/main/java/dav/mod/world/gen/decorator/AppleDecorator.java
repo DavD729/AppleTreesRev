@@ -25,7 +25,7 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 	protected final boolean isNatural;
 	
 	public AppleDecorator(int drop, boolean isNatural) {
-		super(-1.0F);
+		super(0.0F);
 		this.drop = drop;
 		this.isNatural = isNatural;
 	}
@@ -46,22 +46,22 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 	}
 
 	@Override
-	public void func_225576_a_(IWorld world, Random rand, List<BlockPos> logPositions, List<BlockPos> leavesPositions, Set<BlockPos> Set, MutableBoundingBox blockBox) {
-		int i = !leavesPositions.isEmpty() ? Math.max(leavesPositions.get(0).getY() - 1, logPositions.get(0).getY()) : Math.min(logPositions.get(0).getY() + 1 + rand.nextInt(3), logPositions.get(logPositions.size() - 1).getY());
+	public void func_225576_a_(IWorld WorldIn, Random Rand, List<BlockPos> logPositions, List<BlockPos> leavesPositions, Set<BlockPos> Set, MutableBoundingBox blockBox) {
+		int i = !leavesPositions.isEmpty() ? Math.max(leavesPositions.get(0).getY() - 1, logPositions.get(0).getY()) : Math.min(logPositions.get(0).getY() + 1 + Rand.nextInt(3), logPositions.get(logPositions.size() - 1).getY());
 		List<BlockPos> list = logPositions.stream().filter((BlockPos) -> {
 			return BlockPos.getY() == i;
 		}).collect(Collectors.toList());
 		if(!list.isEmpty()) {
-			BlockPos AppleLayerPos = list.get(rand.nextInt(list.size()));
+			BlockPos AppleLayerPos = list.get(Rand.nextInt(list.size()));
 			BlockState AppleType = this.getDrop();
 			int cont = 2;
-			this.func_227423_a_(world, AppleLayerPos.add(1, 0, 1), AppleType, Set, blockBox);
-			this.func_227423_a_(world, AppleLayerPos.add(-1, 0, 2), AppleType, Set, blockBox);
+			this.func_227423_a_(WorldIn, AppleLayerPos.add(1, 0, 1), this.getNaturalAge(AppleType, Rand), Set, blockBox);
+			this.func_227423_a_(WorldIn, AppleLayerPos.add(-1, 0, 2), this.getNaturalAge(AppleType, Rand), Set, blockBox);
 			for(int xPos = -2; xPos < 3; xPos++) {
 				for(int zPos = -2; zPos < 3; zPos++) {
-					if(rand.nextInt(4) == 0 && cont < 8) {
-						if(isAirOrLeaves(world, AppleLayerPos.add(xPos, 0, zPos)) && isLeaves(world, AppleLayerPos.add(xPos, 1, zPos))) {
-							this.func_227423_a_(world, AppleLayerPos.add(xPos, 0, zPos), AppleType, Set, blockBox);
+					if(Rand.nextInt(4) == 0 && cont < 8) {
+						if(isAirOrLeaves(world, AppleLayerPos.add(xPos, 0, zPos)) && isLeaves(WorldIn, AppleLayerPos.add(xPos, 1, zPos))) {
+							this.func_227423_a_(WorldIn, AppleLayerPos.add(xPos, 0, zPos), this.getNaturalAge(AppleType, Rand), Set, blockBox);
 							cont++;
 						}
 					}
@@ -70,14 +70,18 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 		}
 	}
 	
-	protected BlockState getDrop() {
-		BlockState State;
-		switch(this.drop) {
-		case 1: State = BlockInit.GAPPLE_PLANT.getDefaultState();
-				break;
-		default: State = BlockInit.APPLE_PLANT.getDefaultState();
+	private BlockState getNaturalAge(BlockState State, Random Rand) {
+		if(!this.isNatural) {
+			return State;
 		}
-		return this.isNatural ? State.with(ApplePlantBlock.AGE, Integer.valueOf(3)) : State;
+		return State.with(ApplePlantBlock.AGE, Integer.valueOf(2 + Rand.nextInt(3)));
+	}
+	
+	protected BlockState getDrop() {
+		switch(this.drop) {
+		case 1: return BlockInit.GAPPLE_PLANT.getDefaultState();
+		default: return BlockInit.APPLE_PLANT.getDefaultState();
+		}
 	}
 	
 	protected static boolean isAirOrLeaves(IWorld world, BlockPos pos) {
