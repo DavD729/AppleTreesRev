@@ -3,6 +3,9 @@ package dav.mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import dav.mod.config.ConfigBuilder;
+import dav.mod.crafting.GappleRecipeCondition;
+import dav.mod.crafting.NotchRecipeCondition;
 import dav.mod.lists.BlockList;
 import dav.mod.lists.CustomTree;
 import dav.mod.lists.ItemList;
@@ -19,9 +22,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -45,14 +51,21 @@ public class Main {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistries);
 		
 		MinecraftForge.EVENT_BUS.register(this);
+		
+		//Config Builder Register
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigBuilder.SPEC);
+		logger.info("Apple Trees Rev. Mod Loaded");
 	}
 	
 	private void commonSetup(final FMLCommonSetupEvent event) {
-		TreeWorldGen.setupTreeGeneration(); //Registry Biome Features
-		logger.info("CommonSetup Registered.");
+		TreeWorldGen.setupTreeGeneration();
+		logger.info("WorldGen Feature Registered.");
 	}
 	
 	private void clientRegistries(final FMLClientSetupEvent event) {
+		CraftingHelper.register(Main.getLocation("gapplerecipecondition"), new GappleRecipeCondition());
+		CraftingHelper.register(Main.getLocation("notchrecipecondition"), new NotchRecipeCondition());
+		logger.info("Crafting Conditions Registered");
 	}
 	
 	private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -78,7 +91,7 @@ public class Main {
 				ItemList.apple_sapling = new ItemBlock(BlockList.apple_sapling, new Item.Properties().group(ItemGroup.DECORATIONS)).setRegistryName(BlockList.apple_sapling.getRegistryName()),
 				ItemList.gapple_sapling = new ItemBlock(BlockList.gapple_sapling, new Item.Properties().group(ItemGroup.DECORATIONS)).setRegistryName(BlockList.gapple_sapling.getRegistryName())
 			);
-			logger.info("Items Registered.");
+			logger.info("AppleTreesRev: Items Registered.");
 		}
 		
 		@SubscribeEvent
@@ -89,7 +102,7 @@ public class Main {
 				BlockList.apple_sapling = new CustomBlockSapling(new CustomTree(new AppleTreeFeature()), Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)).setRegistryName(getLocation("apple_sapling")),
 				BlockList.gapple_sapling = new CustomBlockSapling(new CustomTree(new GoldAppleTreeFeature()), Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)).setRegistryName(getLocation("gapple_sapling"))
 			);
-			logger.info("Blocks Registered.");
+			logger.info("AppleTreesRev: Blocks Registered.");
 		}
 	}
 }
