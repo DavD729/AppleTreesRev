@@ -1,0 +1,19 @@
+{
+	"conditions": [{
+		"type": "appletreesrev:notchrecipecondition"
+	}],
+	"type": "minecraft:crafting_shaped",
+	"pattern": 
+	[
+		"BBB",
+		"BAB",
+		"BBB"
+	],
+	
+	"key": {
+		"B": { "item": "minecraft:gold_block"},
+		"A": { "item": "minecraft:apple"}
+	},
+	
+	"result": { "item": "minecraft:enchanted_golden_apple"}
+}
