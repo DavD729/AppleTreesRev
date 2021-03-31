@@ -1,4 +1,7 @@
 {
+	"conditions": [{
+		"type": "appletreesrev:gapplerecipecondition"
+	}],
 	"type": "minecraft:crafting_shaped",
 	"pattern": 
 	[
