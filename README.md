@@ -35,5 +35,13 @@ v1.1
 v1.2
 - Changed Apple Decoration on Trees
 - Natural Apple Trees will Spawn with Apple Plants with an Age between 2-5
+
+v1.3
+- Added Config. File:
+
+     *- [Enable/Disable] "Golden Apple Sapling Recipe" [Disabled by Default]*
+     
+     *- [Enable/Disable] "Notch Apple Recipe" [Disabled by Default]*
+    
     
 > This Repository is for Anyone who wants to Add new Features or Change it for Good.
