@@ -3,7 +3,7 @@ loaderVersion="[31,)"
 logoFile="banner.png"
 [[mods]]
 modId="appletreesrev"
-version="1.1"
+version="1.2"
 displayName="Apple Trees Revived"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/apple-trees-revived"
 credits="To https://www.curseforge.com/minecraft/mc-mods/apple-trees Original Mod"
