@@ -3,6 +3,9 @@ package dav.mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import dav.mod.config.ConfigBuilder;
+import dav.mod.crafting.Condition;
+import dav.mod.crafting.ConditionSerializer;
 import dav.mod.lists.BlockList;
 import dav.mod.lists.CustomTree;
 import dav.mod.lists.ItemList;
@@ -21,8 +24,10 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -41,15 +46,26 @@ public class Main {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistries);
 		MinecraftForge.EVENT_BUS.register(this);
+		
+		//Config Builder Register
+		ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, ConfigBuilder.SPEC);
+		LOGGER.info("Apple Trees Rev. Mod Loaded");
 	}
 	
 	private void commonSetup(final FMLCommonSetupEvent event) {
 		TreeWorldGen.setupTreeGeneration();
-		LOGGER.info("CommonSetup Registered.");
+		LOGGER.info("WorldGen Feature Registered.");
 	}
 	
 	private void clientRegistries(final FMLClientSetupEvent event) {
-		LOGGER.info("clientRegistries Registered.");
+		//Registry Crafting Conditions
+		CraftingHelper.register(new ConditionSerializer(new Condition(getPath("gapple_condition"), ConfigBuilder.RECIPES.GoldAppleSaplingRecipe.get()), getPath("gapplerecipecondition")));
+		CraftingHelper.register(new ConditionSerializer(new Condition(getPath("notch_condition"), ConfigBuilder.RECIPES.NotchAppleRecipe.get()), getPath("notchrecipecondition")));
+		LOGGER.info("Crafting Conditions Registered.");
+	}
+	
+	public static ResourceLocation getPath(String path) {
+		return new ResourceLocation(MODID, path);
 	}
 	
 	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
@@ -60,7 +76,7 @@ public class Main {
 				ItemList.APPLE_SAPLING = new BlockItem(BlockList.APPLE_SAPLING, new Item.Properties().group(ItemGroup.DECORATIONS)).setRegistryName(BlockList.APPLE_SAPLING.getRegistryName()),
 				ItemList.GAPPLE_SAPLING = new BlockItem(BlockList.GAPPLE_SAPLING, new Item.Properties().group(ItemGroup.DECORATIONS)).setRegistryName(BlockList.GAPPLE_SAPLING.getRegistryName())
 			);
-			LOGGER.info("Items Registered.");
+			LOGGER.info("AppleTreesRev: Items Registered.");
 		}
 		
 		@SubscribeEvent
@@ -71,11 +87,7 @@ public class Main {
 				BlockList.APPLE_SAPLING = new CustomBlockSapling(new CustomTree(new AppleTreeFeature(NoFeatureConfig::deserialize)), Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)).setRegistryName(getPath("apple_sapling")),
 				BlockList.GAPPLE_SAPLING = new CustomBlockSapling(new CustomTree(new GoldAppleTreeFeature(NoFeatureConfig::deserialize)), Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)).setRegistryName(getPath("gapple_sapling"))
 			);
-			LOGGER.info("Blocks Registered.");
-		}
-		
-		public static ResourceLocation getPath(String path) {
-			return new ResourceLocation(MODID, path);
+			LOGGER.info("AppleTreesRev: Blocks Registered.");
 		}
 	}
 }
