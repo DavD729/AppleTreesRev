@@ -9,7 +9,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.google.gson.JsonElement;
 
-import dav.mod.config.RecipesConfig;
+import dav.mod.Main;
+import dav.mod.config.ConfigBuilder;
+import dav.mod.crafting.RecipesBuilder;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -19,8 +21,11 @@ import net.minecraft.util.profiler.Profiler;
 public class RecipeManagerMixin {
 	@Inject(method = "apply", at = @At("HEAD"))
 	private void interceptApply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
-		if(RecipesConfig.GAPPLE_SAPLING_RECIPE != null) {
-			map.put(new Identifier("appletreesrev", "gapple_sapling"), RecipesConfig.GAPPLE_SAPLING_RECIPE);
+		if(RecipesBuilder.GAPPLE_SAPLING_RECIPE != null && ConfigBuilder.craftGoldAppleSapling) {
+			map.put(Main.getPath("gapple_sapling"), RecipesBuilder.GAPPLE_SAPLING_RECIPE);
+		}
+		if(RecipesBuilder.NOTCH_APPLE_RECIPE != null && ConfigBuilder.craftNotchApple) {
+			map.put(new Identifier("enchanted_golden_apple"), RecipesBuilder.NOTCH_APPLE_RECIPE);
 		}
 	}
 }
