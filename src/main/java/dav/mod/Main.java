@@ -1,8 +1,11 @@
 package dav.mod;
 
-import java.io.File;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import dav.mod.config.RecipesConfig;
+import dav.mod.config.ConfigBuilder;
+import dav.mod.crafting.RecipesBuilder;
 import dav.mod.init.BlockInit;
 import dav.mod.world.gen.TreeWorldGen;
 import net.fabricmc.api.ModInitializer;
@@ -14,15 +17,16 @@ import net.minecraft.util.registry.Registry;
 
 public class Main implements ModInitializer {
 	
-	public static File config;
 	public static final String MODID = "appletreesrev";
+	public static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
 	
 	@Override
 	public void onInitialize() {
+		ConfigBuilder.startConfig();
 		registerBlocks();
 		registerItems();
 		registerFeatures();
-		RecipesConfig.recipeManager();
+		RecipesBuilder.recipeManager();
 		System.out.println("Mod Registered");
 	}
 	
