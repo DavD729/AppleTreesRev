@@ -6,8 +6,7 @@ import dav.mod.Main;
 import dav.mod.init.BlockInit;
 import dav.mod.init.ItemInit;
 import dav.mod.util.interfaces.IHasModel;
-import dav.mod.world.gen.tree.AppleTreeGen;
-import dav.mod.world.gen.tree.GoldAppleTreeGen;
+import dav.mod.world.gen.tree.FruitTreeGen;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
@@ -29,14 +28,14 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class AppleBlockSapling extends BlockBush implements IGrowable, IHasModel{
 	
-	private String type;
+	private String Type;
 	
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
     	protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
     
    	public AppleBlockSapling(String name) {
     	
-    		type = name.replaceAll("sapling_", "").trim();
+    		Type = name.replaceAll("sapling_", "").trim();
 		setUnlocalizedName(name);
 		setRegistryName(name);
 		setSoundType(SoundType.PLANT);
@@ -111,10 +110,10 @@ public class AppleBlockSapling extends BlockBush implements IGrowable, IHasModel
 	public void generateTree(World world, Random rand, BlockPos pos, IBlockState state) {
 		if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, pos)) return;
         	WorldGenerator worldgenerator = (WorldGenerator)(rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true));
-        	switch(type) {
-        	case "apple": worldgenerator = new AppleTreeGen();
+        	switch(Type) {
+        	case "apple": worldgenerator = new FruitTreeGen(0, false);
         		      break;
-		case "gapple": worldgenerator = new GoldAppleTreeGen();
+        	case "gapple": worldgenerator = new FruitTreeGen(1, false);
         	}
         	IBlockState iblockstate2 = Blocks.AIR.getDefaultState();
         	world.setBlockState(pos, iblockstate2, 4);
