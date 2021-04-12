@@ -4,16 +4,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dav.mod.config.ConfigBuilder;
-import dav.mod.crafting.GappleRecipeCondition;
-import dav.mod.crafting.NotchRecipeCondition;
 import dav.mod.lists.BlockList;
 import dav.mod.lists.CustomTree;
 import dav.mod.lists.ItemList;
 import dav.mod.objects.blocks.tree.AppleBlockPlant;
 import dav.mod.objects.blocks.tree.CustomBlockSapling;
 import dav.mod.world.gen.TreeWorldGen;
-import dav.mod.world.gen.tree.AppleTreeFeature;
-import dav.mod.world.gen.tree.GoldAppleTreeFeature;
+import dav.mod.world.gen.tree.FruitTreeFeature;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -63,20 +60,26 @@ public class Main {
 	}
 	
 	private void clientRegistries(final FMLClientSetupEvent event) {
-		CraftingHelper.register(Main.getLocation("gapplerecipecondition"), new GappleRecipeCondition());
-		CraftingHelper.register(Main.getLocation("notchrecipecondition"), new NotchRecipeCondition());
+		CraftingHelper.register(Main.getLocation("gapplerecipecondition"), (Serializer) -> {
+			return () -> ConfigBuilder.RECIPES.GoldAppleSaplingRecipe.get();
+		});
+		
+		CraftingHelper.register(Main.getLocation("notchrecipecondition"), (Serializer) -> {
+			return () -> ConfigBuilder.RECIPES.NotchAppleRecipe.get();
+		});
+		
 		logger.info("Crafting Conditions Registered");
 	}
 	
 	private void enqueueIMC(final InterModEnqueueEvent event) {
-    	}
+    }
 
-    	private void processIMC(final InterModProcessEvent event) {
-    	}
+    private void processIMC(final InterModProcessEvent event) {
+    }
 
-    	@SubscribeEvent
-    	public void onServerStarting(FMLServerStartingEvent event) {
-	}
+    @SubscribeEvent
+    public void onServerStarting(FMLServerStartingEvent event) {
+    }
 	
 	public static ResourceLocation getLocation(String path) {
 		return new ResourceLocation(modid, path);
@@ -99,8 +102,8 @@ public class Main {
 			event.getRegistry().registerAll(
 				BlockList.apple_plant = new AppleBlockPlant(0, Block.Properties.create(Material.PLANTS).hardnessAndResistance(0.4F).sound(SoundType.PLANT)).setRegistryName(getLocation("apple_plant")),
 				BlockList.goldapple_plant = new AppleBlockPlant(1, Block.Properties.create(Material.PLANTS).hardnessAndResistance(0.4F).sound(SoundType.PLANT)).setRegistryName(getLocation("gapple_plant")),
-				BlockList.apple_sapling = new CustomBlockSapling(new CustomTree(new AppleTreeFeature()), Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)).setRegistryName(getLocation("apple_sapling")),
-				BlockList.gapple_sapling = new CustomBlockSapling(new CustomTree(new GoldAppleTreeFeature()), Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)).setRegistryName(getLocation("gapple_sapling"))
+				BlockList.apple_sapling = new CustomBlockSapling(new CustomTree(new FruitTreeFeature(0, false)), Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)).setRegistryName(getLocation("apple_sapling")),
+				BlockList.gapple_sapling = new CustomBlockSapling(new CustomTree(new FruitTreeFeature(1, false)), Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)).setRegistryName(getLocation("gapple_sapling"))
 			);
 			logger.info("AppleTreesRev: Blocks Registered.");
 		}
