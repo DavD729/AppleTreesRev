@@ -14,20 +14,20 @@ import net.minecraft.world.gen.placement.BasePlacement;
 public class TreeSurface extends BasePlacement<SurfacePlacement>{
 
 	@Override
-	public <C extends IFeatureConfig> boolean generate(IWorld worldIn, IChunkGenerator<? extends IChunkGenSettings> chunkGenerator, Random random, BlockPos pos, 
-		SurfacePlacement placementConfig, Feature<C> featureIn, C featureConfig) {
-		int chance = placementConfig.surfaceChance;
+	public <C extends IFeatureConfig> boolean generate(IWorld WorldIn, IChunkGenerator<? extends IChunkGenSettings> ChunkGen, Random Rand, BlockPos Pos, 
+	SurfacePlacement placementConfig, Feature<C> featureIn, C featureConfig) {
+		int Chance = placementConfig.surfaceChance;
 		int i = placementConfig.genChance;
 		boolean flag = false;
 		if(i > 0) {
-	    		for(int j = 0; j < i; ++j) {
-	    			if(random.nextInt(chance) == 0) {
-	    				int k = random.nextInt(16);
-	    				int l = random.nextInt(16);
-	    				featureIn.func_212245_a(worldIn, chunkGenerator, random, worldIn.getHeight(Heightmap.Type.MOTION_BLOCKING, pos.add(k, 0, l)), featureConfig);
-	    				flag = true;
-	    			}
+	    	for(int j = 0; j < i; ++j) {
+	    		if(Rand.nextInt(Chance) == 0) {
+	    			int k = Rand.nextInt(16);
+	    			int l = Rand.nextInt(16);
+	    			featureIn.func_212245_a(WorldIn, ChunkGen, Rand, WorldIn.getHeight(Heightmap.Type.MOTION_BLOCKING, Pos.add(k, 0, l)), featureConfig);
+	    			flag = true;
 	    		}
+	    	}
 		}
 		return flag;
 	}
