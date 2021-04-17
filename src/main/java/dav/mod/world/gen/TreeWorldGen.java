@@ -30,17 +30,17 @@ public class TreeWorldGen {
 		new BlobFoliagePlacer(2, 0))).baseHeight(5).heightRandA(2).foliageHeight(3).noVines().treeDecorators(ImmutableList.of(new BeehiveTreeDecorator(0.05F), new AppleDecorator(0, true))).build();
 	
 	public static void setupWorldGen() {
-		Biomes.PLAINS.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator(SurfaceDecorator::deserialize)
-			.configure(new SurfaceDecorator(1, 60))));
-		Biomes.SUNFLOWER_PLAINS.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator(SurfaceDecorator::deserialize)
-			.configure(new SurfaceDecorator(1, 55))));
-		Biomes.FOREST.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator(SurfaceDecorator::deserialize)
-			.configure(new SurfaceDecorator(1, 25))));
-		Biomes.DARK_FOREST.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator(SurfaceDecorator::deserialize)
-			.configure(new SurfaceDecorator(1, 20))));
-		Biomes.FLOWER_FOREST.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator(SurfaceDecorator::deserialize)
-			.configure(new SurfaceDecorator(3, 10))));
-		Biomes.WOODED_MOUNTAINS.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator(SurfaceDecorator::deserialize)
-			.configure(new SurfaceDecorator(2, 35))));
+		Biomes.PLAINS.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator()
+			.configure(new SurfaceDecorator(0, 20))));
+		Biomes.SUNFLOWER_PLAINS.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator()
+			.configure(new SurfaceDecorator(0, 20))));
+		Biomes.FOREST.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator()
+			.configure(new SurfaceDecorator(1, 30))));
+		Biomes.DARK_FOREST.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator()
+			.configure(new SurfaceDecorator(1, 30))));
+		Biomes.FLOWER_FOREST.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator()
+			.configure(new SurfaceDecorator(3, 5))));
+		Biomes.WOODED_MOUNTAINS.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(NATURAL_APPLE_TREE_CONFIG).createDecoratedFeature(new TreeDecorator()
+			.configure(new SurfaceDecorator(0, 30))));
 	}
 }
