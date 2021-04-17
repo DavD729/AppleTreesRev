@@ -25,10 +25,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -43,10 +40,6 @@ public class Main {
 		
 		instance = this;
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistries);
-		
 		MinecraftForge.EVENT_BUS.register(this);
 		
 		//Config Builder Register
@@ -56,10 +49,8 @@ public class Main {
 	
 	private void commonSetup(final FMLCommonSetupEvent event) {
 		TreeWorldGen.setupTreeGeneration();
-		logger.info("WorldGen Feature Registered.");
-	}
-	
-	private void clientRegistries(final FMLClientSetupEvent event) {
+		logger.info("Common: WorldGen Feature Registered.");
+		
 		CraftingHelper.register(Main.getLocation("gapplerecipecondition"), (Serializer) -> {
 			return () -> ConfigBuilder.RECIPES.GoldAppleSaplingRecipe.get();
 		});
@@ -67,19 +58,12 @@ public class Main {
 		CraftingHelper.register(Main.getLocation("notchrecipecondition"), (Serializer) -> {
 			return () -> ConfigBuilder.RECIPES.NotchAppleRecipe.get();
 		});
-		
-		logger.info("Crafting Conditions Registered");
+		logger.info("Common: Crafting Conditions Registered");
 	}
-	
-	private void enqueueIMC(final InterModEnqueueEvent event) {
-    }
 
-    private void processIMC(final InterModProcessEvent event) {
-    }
-
-    @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
-    }
+	@SubscribeEvent
+	public void onServerStarting(FMLServerStartingEvent event) {
+	}
 	
 	public static ResourceLocation getLocation(String path) {
 		return new ResourceLocation(modid, path);
