@@ -85,6 +85,6 @@ v1.4
      - Chino Tradicional (中國人) - zh_TW
 
 v1.4b
-- Fixed a Server Side Mixins Additions by Config.
+- Fixed Server Side Mixins Additions by Config.
     
 > This Repository is for Anyone who wants to Add new Features or Change it for Good.
