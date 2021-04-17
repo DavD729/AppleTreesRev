@@ -40,6 +40,7 @@ public class RecipesBuilder {
 				),
 				new Identifier("enchanted_golden_apple")
 			);
+			System.out.println("Apple Trees Rev.: Recipes Builded");
 		}
 	}
 	
