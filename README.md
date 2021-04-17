@@ -42,5 +42,52 @@ v1.2
      *- [Enable/Disable] "Golden Apple Sapling Recipe" [Disabled by Default]*
      
      *- [Enable/Disable] "Notch Apple Recipe" [Disabled by Default]*
+
+v1.3
+- Fixed a Server Side Conditions Registry
+- Fixed natural apple plants spawning (Age of 2-5)
+- Apple Plants Bounding Box Resized
+- World Generation has changed
+
+     *- Plains & Sunflower Plains have a Common Generation*
+     
+     *- Forests & Dark Forests have a Rare Generation*
+     
+     *- Flower Forests have the Most Common Generation*
+     
+     *- Wooden Extreme Hills have a Rare Generation*
+     
+- Apple Trees has been Re-Written:
+
+     *- Apples have less chance of generation*
+     
+     *- Apples have more random generation*
+     
+- Added World Loot:
+
+  - Overworld:
+  
+      *- Golden Apple Saplings can be Found on:*
+      
+       - Mineshafts
+       - Dungeons
+       - Jungle Temples
+       - Desert Temples
     
+  - Nether:
+  
+      *- Golden Apple Saplings can be Found on:*
+      - Nether Bastions
+
+- Added Language Support:
+     - Alemán (Deutsche) - de_DE
+     - Inglés (English) - en_US
+     - Español (Español) - es_MX
+     - Frances (Français) - fr_FR
+     - Japonés (日本語) - ja_JP
+     - Coreano (한국어) - ko_KR
+     - Portugués (Português) - pt_BR
+     - Ruso (русский) - ru_RU
+     - Chino Simplificado (中国人) - zh_CN
+     - Chino Tradicional (中國人) - zh_TW
 > This Repository is for Anyone who wants to Add new Features or Change it for Good.
