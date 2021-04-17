@@ -82,4 +82,7 @@ v1.4
      - Chino Simplificado (中国人) - zh_CN
      - Chino Tradicional (中國人) - zh_TW
 
+v1.4b
+- Fixed a Server Side Conditions Registry
+
 > This Repository is for Anyone who wants to Add new Features or Change it for Good.
