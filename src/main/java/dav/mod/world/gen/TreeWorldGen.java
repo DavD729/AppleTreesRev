@@ -6,7 +6,7 @@ import dav.mod.Main;
 import dav.mod.world.gen.decorator.AppleDecorator;
 import dav.mod.world.gen.decorator.SurfaceDecorator;
 import dav.mod.world.gen.decorator.TreeDecorator;
-import dav.mod.world.gen.feature.GenericNaturalAppleTree;
+import dav.mod.world.gen.feature.DefaultTreeGenerator;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.block.BlockState;
@@ -38,25 +38,25 @@ public class TreeWorldGen {
 	
 	public static final Decorator<SurfaceDecorator> TREE_DECORATOR = Registry.register(Registry.DECORATOR, Main.getPath("tree_decorator"), new TreeDecorator(SurfaceDecorator.CODEC));
 	
-	public static final AppleDecorator APPLE_A = new AppleDecorator(0, false);
-	public static final AppleDecorator APPLE_B = new AppleDecorator(1, false);
-	
 	public static final TreeFeatureConfig BASE_TREE = new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES),
 		new BlobFoliagePlacer(UniformIntDistribution.of(2), UniformIntDistribution.of(0), 3), new StraightTrunkPlacer(5, 2, 0), new TwoLayersFeatureSize(1, 0, 1))
 		.decorators(ImmutableList.of(ConfiguredFeatures.Decorators.MORE_BEEHIVES_TREES)).ignoreVines().build();
 	
 	public static final ConfiguredFeature<TreeFeatureConfig, ?> APPLE_TREE = new ConfiguredFeature<TreeFeatureConfig, Feature<TreeFeatureConfig>>(Feature.TREE, BASE_TREE
-		.setTreeDecorators(ImmutableList.of(APPLE_A)));
+		.setTreeDecorators(ImmutableList.of(new AppleDecorator(0, false))));
 	
 	public static final ConfiguredFeature<TreeFeatureConfig, ?> GAPPLE_TREE = new ConfiguredFeature<TreeFeatureConfig, Feature<TreeFeatureConfig>>(Feature.TREE, BASE_TREE
-		.setTreeDecorators(ImmutableList.of(APPLE_B)));
+		.setTreeDecorators(ImmutableList.of(new AppleDecorator(1, false))));
 	
-	private static final Feature<DefaultFeatureConfig> NAT_TREE = new GenericNaturalAppleTree(DefaultFeatureConfig.CODEC, BASE_TREE);
+	public static final ConfiguredFeature<TreeFeatureConfig, ?> NATURAL_TREE = new ConfiguredFeature<TreeFeatureConfig, Feature<TreeFeatureConfig>>(Feature.TREE, BASE_TREE
+		.setTreeDecorators(ImmutableList.of(new AppleDecorator(0, true))));
 	
-	public static final ConfiguredDecorator<SurfaceDecorator> PLAINS_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(40));
-	public static final ConfiguredDecorator<SurfaceDecorator> FOREST_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(25));
-	public static final ConfiguredDecorator<SurfaceDecorator> FLOWER_FOREST_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(8));
-	public static final ConfiguredDecorator<SurfaceDecorator> MOUNTAIN_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(60));
+	private static final Feature<DefaultFeatureConfig> NAT_TREE = new DefaultTreeGenerator(DefaultFeatureConfig.CODEC, NATURAL_TREE);
+	
+	public static final ConfiguredDecorator<SurfaceDecorator> PLAINS_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(20));
+	public static final ConfiguredDecorator<SurfaceDecorator> FOREST_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(30));
+	public static final ConfiguredDecorator<SurfaceDecorator> FLOWER_FOREST_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(5));
+	public static final ConfiguredDecorator<SurfaceDecorator> MOUNTAIN_DECORATE = TREE_DECORATOR.configure(new SurfaceDecorator(30));
 	
 	public static final ConfiguredFeature<?, ?> PLAINS_APPLE = NAT_TREE.configure(FeatureConfig.DEFAULT).decorate(PLAINS_DECORATE);
 	public static final ConfiguredFeature<?, ?> FOREST_APPLE = NAT_TREE.configure(FeatureConfig.DEFAULT).decorate(FOREST_DECORATE);
@@ -64,7 +64,7 @@ public class TreeWorldGen {
 	public static final ConfiguredFeature<?, ?> MOUNTAIN_APPLE = NAT_TREE.configure(FeatureConfig.DEFAULT).decorate(MOUNTAIN_DECORATE);
 	
 	public static void registerFeatures() {	
-		Registry.register(Registry.FEATURE, Main.getPath("generic_apple_tree"), NAT_TREE);
+		Registry.register(Registry.FEATURE, Main.getPath("default_apple_tree"), NAT_TREE);
 		
 		RegistryKey<ConfiguredFeature<?, ?>> plainsApple = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, Main.getPath("plains_apple"));
 		RegistryKey<ConfiguredFeature<?, ?>> forestApple = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, Main.getPath("forest_apple"));
