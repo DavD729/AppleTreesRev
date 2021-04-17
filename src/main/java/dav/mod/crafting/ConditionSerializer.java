@@ -9,11 +9,9 @@ import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
 public class ConditionSerializer implements IConditionSerializer<ICondition>{
 	
 	private final ICondition Condition;
-	private final ResourceLocation ID;
 	
-	public ConditionSerializer(ICondition Condition, ResourceLocation ID) {
+	public ConditionSerializer(ICondition Condition) {
 		this.Condition = Condition;
-		this.ID = ID;
 	}
 	
 	@Override
@@ -27,7 +25,7 @@ public class ConditionSerializer implements IConditionSerializer<ICondition>{
 
 	@Override
 	public ResourceLocation getID() {
-		return ID;
+		return this.Condition.getID();
 	}
 
 }
