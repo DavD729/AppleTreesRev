@@ -16,11 +16,11 @@ public class TreeDecorator extends Decorator<SurfaceDecorator>{
 	}
 
 	@Override
-	public Stream<BlockPos> getPositions(DecoratorContext context, Random random, SurfaceDecorator config, BlockPos pos) {
-		if(random.nextInt(config.genChance) == 0) {
-			int i = random.nextInt(16);
-			int j = random.nextInt(16);
-			return Stream.of(pos.add(i, 0, j));
+	public Stream<BlockPos> getPositions(DecoratorContext Context, Random Rand, SurfaceDecorator Config, BlockPos Pos) {
+		if(Rand.nextInt(Config.genChance) == 0) {
+			int i = Rand.nextInt(16);
+			int j = Rand.nextInt(16);
+			return Stream.of(Pos.add(i, 0, j));
 		} else {
 			return Stream.empty();
 		}
