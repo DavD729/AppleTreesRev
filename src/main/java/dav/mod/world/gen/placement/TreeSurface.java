@@ -16,11 +16,11 @@ public class TreeSurface extends Placement<SurfacePlacement>{
 	}
 
 	@Override
-	public Stream<BlockPos> getPositions(WorldDecoratingHelper helper, Random rand, SurfacePlacement config, BlockPos pos) {
-		if(rand.nextInt(config.genChance) == 0) {
-			int i = rand.nextInt(16);
-		    int j = rand.nextInt(16);
-		    return Stream.of(pos.add(i, 0, j));
+	public Stream<BlockPos> getPositions(WorldDecoratingHelper Helper, Random Rand, SurfacePlacement Config, BlockPos Pos) {
+		if(Rand.nextInt(Config.genChance) == 0) {
+			int i = Rand.nextInt(16);
+		    int j = Rand.nextInt(16);
+		    return Stream.of(Pos.add(i, 0, j));
 		} else {
 			return Stream.empty();
 		}

@@ -6,7 +6,7 @@ import net.minecraft.world.gen.placement.IPlacementConfig;
 
 public class SurfacePlacement implements IPlacementConfig {
 	
-	public static final Codec<SurfacePlacement> CODEC = Codec.INT.fieldOf("genChance").xmap(SurfacePlacement::new, (SurfacePlacement) -> {
+	public static final Codec<SurfacePlacement> CODEC = Codec.intRange(1, 1000).fieldOf("genChance").xmap(SurfacePlacement::new, (SurfacePlacement) -> {
 		return SurfacePlacement.genChance;
 	}).codec();
 			
