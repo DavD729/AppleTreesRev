@@ -23,9 +23,11 @@ public class RecipeManagerMixin {
 	private void interceptApply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
 		if(RecipesBuilder.GAPPLE_SAPLING_RECIPE != null && ConfigBuilder.craftGoldAppleSapling) {
 			map.put(Main.getPath("gapple_sapling"), RecipesBuilder.GAPPLE_SAPLING_RECIPE);
+			System.out.println("Apple Trees Rev.: Gold Apple Sapling Recipe Added");
 		}
 		if(RecipesBuilder.NOTCH_APPLE_RECIPE != null && ConfigBuilder.craftNotchApple) {
 			map.put(new Identifier("enchanted_golden_apple"), RecipesBuilder.NOTCH_APPLE_RECIPE);
+			System.out.println("Apple Trees Rev.: Notch Apple Recipe Added");
 		}
 	}
 }
