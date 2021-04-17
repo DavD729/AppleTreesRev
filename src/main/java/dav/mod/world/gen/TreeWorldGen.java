@@ -34,17 +34,17 @@ public class TreeWorldGen {
 		.setSapling((net.minecraftforge.common.IPlantable)BlockInit.APPLE_SAPLING).build();
 	
 	public static void setupTreeGeneration() {
-		Biomes.PLAINS.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
-			.configure(new SurfacePlacement(1, 60))));
-		Biomes.SUNFLOWER_PLAINS.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
-			.configure(new SurfacePlacement(1, 55))));
-		Biomes.FOREST.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
-			.configure(new SurfacePlacement(1, 25))));
-		Biomes.DARK_FOREST.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
-			.configure(new SurfacePlacement(1, 20))));
-		Biomes.FLOWER_FOREST.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
-			.configure(new SurfacePlacement(3, 10))));
-		Biomes.WOODED_MOUNTAINS.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface(SurfacePlacement::deserialize)
-			.configure(new SurfacePlacement(2, 35))));		
+		Biomes.PLAINS.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface()
+			.configure(new SurfacePlacement(0, 20))));
+		Biomes.SUNFLOWER_PLAINS.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface()
+			.configure(new SurfacePlacement(0, 20))));
+		Biomes.FOREST.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface()
+			.configure(new SurfacePlacement(1, 30))));
+		Biomes.DARK_FOREST.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface()
+			.configure(new SurfacePlacement(1, 30))));
+		Biomes.FLOWER_FOREST.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface()
+			.configure(new SurfacePlacement(3, 5))));
+		Biomes.WOODED_MOUNTAINS.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.NORMAL_TREE.withConfiguration(NATURAL_APPLE_TREE_CONFIG).withPlacement(new TreeSurface()
+			.configure(new SurfacePlacement(0, 30))));		
 	}
 }
