@@ -37,10 +37,10 @@ public class BlockApplePlant extends Block implements Fertilizable {
 		Block.createCuboidShape(10.0D, 16.0D, 10.0D, 6.0D, 11.0D, 6.0D), //Age 1
 		Block.createCuboidShape(11.0D, 16.0D, 11.0D, 4.0D, 9.5D, 4.0D),  //Age 2
 		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 6.0D, 4.0D),  //Age 3
-		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 3.0D, 4.0D, 3.0D),  //Age 4
-		Block.createCuboidShape(14.0D, 16.0D, 14.0D, 2.0D, 3.0D, 2.0D),  //Age 5
-		Block.createCuboidShape(15.0D, 16.0D, 15.0D, 1.0D, 1.0D, 1.0D),  //Age 6
-		Block.createCuboidShape(15.0D, 16.0D, 15.0D, 1.0D, 1.0D, 1.0D)   //Age 7
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 4.0D, 4.0D),  //Age 4
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 3.0D, 4.0D),  //Age 5
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 2.0D, 4.0D),  //Age 6
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 2.0D, 4.0D)   //Age 7
 	};
 	
 	public BlockApplePlant(Settings settings, Item drop) {
@@ -130,30 +130,31 @@ public class BlockApplePlant extends Block implements Fertilizable {
 		for (int i = -1; i <= 1; ++i) {
 			for (int j = -1; j <= 1; ++j) {
 				float f1 = 0.0F;
-                		BlockState iblockstate = world.getBlockState(blockpos.add(i, 0, j));
-                		if (iblockstate.getBlock().getDefaultState() == air) f1 = 2.0F;
-                		if (i != 0 || j != 0) f1 /= 2.0F;
-                		f += f1;
-            		}
-        	}
-        	BlockPos blockposN = pos.north();
-  		BlockPos blockposS = pos.south();
-  		BlockPos blockposW = pos.west();
-  		BlockPos blockposE = pos.east();
-  		boolean flag = !isLeavesOrAir(world, blockposN) || !isLeavesOrAir(world, blockposS);
-		boolean flag1 = !isLeavesOrAir(world, blockposE) || !isLeavesOrAir(world, blockposW);
+				BlockState iblockstate = world.getBlockState(blockpos.add(i, 0, j));
+				if (iblockstate.getBlock().getDefaultState() == air) f1 = 2.0F;
+				if (i != 0 || j != 0) f1 /= 2.0F;
+				f += f1;
+			}
+		}
 		
+		BlockPos blockposN = pos.north();
+		BlockPos blockposS = pos.south();
+		BlockPos blockposW = pos.west();
+		BlockPos blockposE = pos.east();
+		boolean flag = !isLeavesOrAir(world, blockposN) || !isLeavesOrAir(world, blockposS);
+		boolean flag1 = !isLeavesOrAir(world, blockposE) || !isLeavesOrAir(world, blockposW);
+
 		if (flag && flag1) {
-            		f /= 2.0F;
-        	} else {
-            		boolean flag2 = !isLeavesOrAir(world, blockposW.north()) || !isLeavesOrAir(world, blockposE.north()) || !isLeavesOrAir(world, blockposN.south()) || !isLeavesOrAir(world, blockposW.south());
-            		if (flag2) {
+			f /= 2.0F;
+		} else {
+			boolean flag2 = !isLeavesOrAir(world, blockposW.north()) || !isLeavesOrAir(world, blockposE.north()) || !isLeavesOrAir(world, blockposN.south()) || !isLeavesOrAir(world, blockposW.south());
+			if (flag2) {
 				f /= 2.0F;
-            		}
-        	}
-        return f;
-  	}
-	
+			}
+		}
+		return f;
+	}
+
 	private static boolean isLeavesOrAir(BlockView worldIn, BlockPos pos) {
 		return worldIn.getBlockState(pos).isAir() || worldIn.getBlockState(pos).matches(BlockTags.LEAVES);
 	}
