@@ -41,7 +41,7 @@ public class Main implements ModInitializer {
 		Registry.register(Registry.BLOCK, getPath("gapple_plant"), BlockInit.GAPPLE_PLANT);
 		Registry.register(Registry.BLOCK, getPath("apple_sapling"), BlockInit.APPLE_SAPLING);
 		Registry.register(Registry.BLOCK, getPath("gapple_sapling"), BlockInit.GAPPLE_SAPLING);
-		BlockInit.renderCutoutBlocks();
+		BlockInit.renderBlocks();
 		System.out.println("Apple Trees Rev.: Blocks Registered");
 	}
 	
