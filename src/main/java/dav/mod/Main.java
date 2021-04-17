@@ -33,6 +33,8 @@ public class Main implements ModInitializer {
 	public static void registerItems() {
 		Registry.register(Registry.ITEM, getPath("apple_sapling"), new BlockItem(BlockInit.APPLE_SAPLING, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
 		Registry.register(Registry.ITEM, getPath("gapple_sapling"), new BlockItem(BlockInit.GAPPLE_SAPLING, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
+		Registry.register(Registry.ITEM, getPath("gapple_plant"), new BlockItem(BlockInit.GAPPLE_PLANT, new FabricItemSettings()));
+		Registry.register(Registry.ITEM, getPath("apple_plant"), new BlockItem(BlockInit.APPLE_PLANT, new FabricItemSettings()));
 		System.out.println("Apple Trees Rev.: Items Registered");
 	}
 	
@@ -46,7 +48,7 @@ public class Main implements ModInitializer {
 		Registry.register(Registry.BLOCK, getPath("gapple_plant"), BlockInit.GAPPLE_PLANT);
 		Registry.register(Registry.BLOCK, getPath("apple_sapling"), BlockInit.APPLE_SAPLING);
 		Registry.register(Registry.BLOCK, getPath("gapple_sapling"), BlockInit.GAPPLE_SAPLING);
-		BlockInit.renderCutoutBlocks();
+		BlockInit.renderBlocks();
 		System.out.println("Apple Trees Rev.: Blocks Registered");
 	}
 	
