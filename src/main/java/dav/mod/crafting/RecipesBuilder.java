@@ -40,10 +40,11 @@ public class RecipesBuilder {
 				),
 				new Identifier("enchanted_golden_apple")
 			);
+			System.out.println("Apple Trees Rev.: Recipes Builded");
 		}
 	}
 	
-	public static JsonObject createShapedRecipeJson(ArrayList<Character> keys, ArrayList<Identifier> items, ArrayList<String> type, ArrayList<String> pattern, Identifier output) {
+	private static JsonObject createShapedRecipeJson(ArrayList<Character> keys, ArrayList<Identifier> items, ArrayList<String> type, ArrayList<String> pattern, Identifier output) {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "minecraft:crafting_shaped");
 		JsonArray jsonArray = new JsonArray();
