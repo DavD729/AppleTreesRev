@@ -35,10 +35,10 @@ public class ApplePlantBlock extends Block implements Fertilizable{
 		Block.createCuboidShape(10.0D, 16.0D, 10.0D, 6.0D, 11.0D, 6.0D), //Age 1
 		Block.createCuboidShape(11.0D, 16.0D, 11.0D, 4.0D, 9.5D, 4.0D),  //Age 2
 		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 6.0D, 4.0D),  //Age 3
-		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 3.0D, 4.0D, 3.0D),  //Age 4
-		Block.createCuboidShape(14.0D, 16.0D, 14.0D, 2.0D, 3.0D, 2.0D),  //Age 5
-		Block.createCuboidShape(15.0D, 16.0D, 15.0D, 1.0D, 1.0D, 1.0D),  //Age 6
-		Block.createCuboidShape(15.0D, 16.0D, 15.0D, 1.0D, 1.0D, 1.0D)   //Age 7
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 4.0D, 4.0D),  //Age 4
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 3.0D, 4.0D),  //Age 5
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 2.0D, 4.0D),  //Age 6
+		Block.createCuboidShape(12.0D, 16.0D, 12.0D, 4.0D, 2.0D, 4.0D)   //Age 7
 	};
 	
 	public ApplePlantBlock(Settings settings, int Type) {
