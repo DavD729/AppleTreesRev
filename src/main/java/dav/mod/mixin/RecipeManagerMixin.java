@@ -22,9 +22,12 @@ public class RecipeManagerMixin {
 	private void interceptApply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
 		if(RecipesBuilder.GAPPLE_SAPLING_RECIPE != null && ConfigBuilder.craftGoldAppleSapling) {
 			map.put(new Identifier("appletreesrev", "gapple_sapling"), RecipesBuilder.GAPPLE_SAPLING_RECIPE);
+			System.out.println("Mixin: Golden Apple Sapling Recipe Added");
 		}
 		if(RecipesBuilder.NOTCH_APPLE_RECIPE != null && ConfigBuilder.craftNotchApple) {
 			map.put(new Identifier("enchanted_golden_apple"), RecipesBuilder.NOTCH_APPLE_RECIPE);
+			System.out.println("Mixin: Notch Apple Recipe Added");
 		}
+		System.out.println("Apple Trees Rev.: Mixin Fired");
 	}
 }
