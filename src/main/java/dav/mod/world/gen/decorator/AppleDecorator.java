@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -43,7 +44,7 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 	}
 	
 	@Override
-	public void generate(StructureWorldAccess world, Random Rand, List<BlockPos> logPositions, List<BlockPos> leavesPositions, Set<BlockPos> placedStates, BlockBox box) {
+	public void generate(StructureWorldAccess World, Random Rand, List<BlockPos> logPositions, List<BlockPos> leavesPositions, Set<BlockPos> placedStates, BlockBox box) {
 		int i = !leavesPositions.isEmpty() ? Math.max(((BlockPos)leavesPositions.get(0)).getY() - 1, ((BlockPos)logPositions.get(0)).getY()) : Math.min(((BlockPos)logPositions.get(0)).getY() + 1 + Rand.nextInt(3), ((BlockPos)logPositions.get(logPositions.size() - 1)).getY());
 		List<BlockPos> list = (List<BlockPos>)logPositions.stream().filter((pos) -> {
 			return pos.getY() == i;
@@ -51,27 +52,44 @@ public class AppleDecorator extends BeehiveTreeDecorator{
 		if (!list.isEmpty()) {
 			BlockPos AppleLayerPos = list.get(Rand.nextInt(list.size()));
 			BlockState AppleType = this.getDropType();
-			int cont = 2;
-			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(1, 0, 1), this.getNaturalAge(AppleType, Rand), placedStates, box);
-			this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(-1, 0, 2), this.getNaturalAge(AppleType, Rand), placedStates, box);
-			for(int xPos = -2; xPos < 3; xPos++) {
-				for(int zPos = -2; zPos < 3; zPos++) {
-					if(Rand.nextInt(4) == 0 && cont < 8) {
-						if(isAirOrLeaves(world, AppleLayerPos.add(xPos, 0, zPos)) && isLeaves(world, AppleLayerPos.add(xPos, 1, zPos))) {
-							this.setBlockStateAndEncompassPosition(world, AppleLayerPos.add(xPos, 0, zPos), this.getNaturalAge(AppleType, Rand), placedStates, box);
-							cont++;
-						}
+			List<BlockPos> Spots = this.getLocations(World, AppleLayerPos);
+			if(!Spots.isEmpty()) {
+				int Cont = 0;
+
+				for(int j = 0; j < 2 && j < Spots.size(); j++) {
+					int Index = Rand.nextInt(Spots.size());
+					this.setBlockStateAndEncompassPosition(World, Spots.get(Index), this.getNaturalAge(AppleType, Rand), placedStates, box);
+					Spots.remove(Index);
+					Cont++;
+				}
+
+				for(int j = 0; Cont < 8 && j < Spots.size(); j++) {
+					if(Rand.nextInt(5) == 0) {
+						this.setBlockStateAndEncompassPosition(World, Spots.get(j), this.getNaturalAge(AppleType, Rand), placedStates, box);
+						Cont++;
 					}
 				}
 			}
 		}
 	}
 	
+	private List<BlockPos> getLocations(StructureWorldAccess World, BlockPos Pos){
+		List<BlockPos> Locations = Lists.newArrayList();
+		for(int xPos = -2; xPos < 3; xPos++) {
+			for(int zPos = -2; zPos < 3; zPos++) {
+				if(isAirOrLeaves(World, Pos.add(xPos, 0, zPos)) && isLeaves(World, Pos.add(xPos, 1, zPos))) {
+					Locations.add(Pos.add(xPos, 0, zPos));
+				}
+			}
+		}
+		return Locations;
+	}
+	
 	private BlockState getNaturalAge(BlockState State, Random Rand) {
 		if(!this.isNatural) {
 			return State;
 		}
-		return State.with(ApplePlantBlock.AGE, Integer.valueOf(2 + Rand.nextInt(3)));
+		return State.with(ApplePlantBlock.AGE, Integer.valueOf(2 + Rand.nextInt(4)));
 	}
 	
 	protected BlockState getDropType() {
