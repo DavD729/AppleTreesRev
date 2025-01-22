@@ -93,4 +93,14 @@ v1.6
      - Chino Simplificado (中国人) - zh_CN
      - Chino Tradicional (中國人) - zh_TW
 
-> This Repository is for Anyone who wants to Add new Features or Change it for Good.
+v1.7
+- All code rewritten: 
+     - IMPORTANT: *Using this version will break past saves, use all of your items before updating*
+- Regular apple trees will now spawn with 4-6 logs of height
+- Now can spawn big apple trees
+- Configuration file:
+     - Easy harvest: [true/false] [false by default] - *(You can right click on apple plants to harvest, has a chance to grow again)*
+- Waila compat (Hwyla):
+     - Apple plants will show their growth percentage
+
+> This repository is for Anyone who wants to add new Features or change it for good.

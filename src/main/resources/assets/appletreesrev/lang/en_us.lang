@@ -1,2 +1,4 @@
 tile.sapling_apple.name=Apple Sapling
-tile.sapling_gapple.name=Golden Apple Sapling
+tile.sapling_gold_apple.name=Gold Apple Sapling
+tile.plant_apple.name=Apple Plant
+tile.plant_gold_apple.name=Gold Apple Plant

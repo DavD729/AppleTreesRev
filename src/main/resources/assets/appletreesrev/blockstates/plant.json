@@ -1,0 +1,20 @@
+{
+	"variants": {
+		"age=0,apple_type=apple": { "model": "appletreesrev:apple_stage_0"},
+		"age=1,apple_type=apple": { "model": "appletreesrev:apple_stage_1"},
+		"age=2,apple_type=apple": { "model": "appletreesrev:apple_stage_2"},
+		"age=3,apple_type=apple": { "model": "appletreesrev:apple_stage_3"},
+		"age=4,apple_type=apple": { "model": "appletreesrev:apple_stage_4"},
+		"age=5,apple_type=apple": { "model": "appletreesrev:apple_stage_5"},
+		"age=6,apple_type=apple": { "model": "appletreesrev:apple_stage_6"},
+		"age=7,apple_type=apple": { "model": "appletreesrev:apple_stage_7"},
+		"age=0,apple_type=gold_apple": { "model": "appletreesrev:apple_stage_0"},
+		"age=1,apple_type=gold_apple": { "model": "appletreesrev:apple_stage_1"},
+		"age=2,apple_type=gold_apple": { "model": "appletreesrev:apple_stage_2"},
+		"age=3,apple_type=gold_apple": { "model": "appletreesrev:apple_stage_3"},
+		"age=4,apple_type=gold_apple": { "model": "appletreesrev:apple_stage_4"},
+		"age=5,apple_type=gold_apple": { "model": "appletreesrev:apple_stage_5"},
+		"age=6,apple_type=gold_apple": { "model": "appletreesrev:gold_apple_stage_6"},
+		"age=7,apple_type=gold_apple": { "model": "appletreesrev:gold_apple_stage_7"}
+	}
+}
